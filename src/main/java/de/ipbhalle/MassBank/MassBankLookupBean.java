@@ -200,12 +200,16 @@ public class MassBankLookupBean extends Thread implements Runnable, Serializable
     }
     
 	public MassBankLookupBean() {
-		this(massbankJP);			// create instance with default massbank server JAPAN
+		this("http://localhost/MetFusion/");			// create instance with default massbank server JAPAN
 	}
 	
 	public MassBankLookupBean(String serverUrl) {
 		this.setMbCommon(new MassBankCommon());		// only create new MassBankCommon once
-		setupMassBank(serverUrl);
+		try {
+			setupMassBank(serverUrl);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	private void setupMassBank(String serverUrl) {

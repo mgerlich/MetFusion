@@ -6,11 +6,8 @@
 	<display-name>MetFusion</display-name>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
+		<welcome-file>metfusion_main.xhtml</welcome-file>
 	</welcome-file-list>
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
@@ -40,14 +37,29 @@
 		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Production</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.apache.myfaces.STRICT_JSF_2_CC_EL_RESOLVER</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>org.apache.myfaces.VALIDATE</param-name>
+		<param-value>true</param-value>
+	</context-param>
 
 	<context-param>
 		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
 		<param-value>resources.application</param-value>
 	</context-param>
-	<listener>
-		<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-	</listener>
+<!-- 	<listener> -->
+<!-- 		<listener-class>com.sun.faces.config.ConfigureListener</listener-class> -->
+<!-- 	</listener> -->
 
 	<!-- Many of the ICEfaces Components make use of the Resource Servlet -->
 	<servlet>

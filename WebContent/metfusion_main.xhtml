@@ -9,90 +9,92 @@
 	xmlns:ice="http://www.icesoft.com/icefaces/component">
 <h:head>
 	<title>MetFusion</title>
-	<link rel="stylesheet" type="text/css"
+	<link id="linkRimeCss" rel="stylesheet" type="text/css"
 		href="./xmlhttp/css/rime/rime.css" />
-	<link rel="stylesheet" type="text/css"
+	<link id="linkStylesCss" rel="stylesheet" type="text/css"
 		href="./css/styles.css" />
-	<link rel="shortcut icon" type="image/x-icon"
+	<link id="linkFavicon" rel="shortcut icon" type="image/x-icon"
 		href="images/icons/favicon.ico" />
 </h:head>
 <h:body>
-	<h:form id="form">
-	<icecore:singleSubmit />	<!-- ICEfaces 2 option for partial submit of form/input values for storing/validation -->
+	<h:form id="formMetFusion">
+<!-- 	<icecore:refresh interval="10" duration="2"></icecore:refresh> -->
+	<icecore:singleSubmit /> <!-- ICEfaces 2 option for partial submit of form/input values for storing/validation -->
 
-		<div id="header">
+		<div id="divheader">
 <!--			<ui:include src="/WEB-INF/inc-content/header.xhtml"></ui:include>-->
 <!--			<a href="http://msbi.ipb-halle.de/MetFusion/" title="MetFusion">-->
 <!--				<img alt="MetFusion" class="iceGphImg" id="homelogo" src="images/appLogo.png" style="float: left; border: 0px;" />-->
 <!--			</a>-->
 		</div>
 
-		<div id="top_connect">
-			<ice:outputConnectionStatus displayHourglassWhenActive="true" showPopupOnDisconnect="true"/>
+		<div id="div_top_connect">
+			<ice:outputConnectionStatus id="outputConnectionStatusTopConnect"
+				displayHourglassWhenActive="true" showPopupOnDisconnect="true"/>
 		</div>
 
 		<div id="content">
-			<ice:panelTabSet selectedIndex="#{appBean.selectedTab}">
-				<ice:panelTab label="Spectrum Query">
+			<ice:panelTabSet id="panelTabSetMetfusion" selectedIndex="#{appBean.selectedTab}">
+				<ice:panelTab id="panelTabSpectrumQuery" label="Spectrum Query">
 				<div id="inputs" style="width: 100%;">
 					<div id="sourceParams" style="border: 1px dashed silver; width: 65%; float: left;">
 					
 					<!-- stacking panel selector for spectral database -->
-					<ice:panelGrid columns="3">
-						<ice:outputLabel for="selectSpectralDB" value="Selected Spectral Database:"/>
+					<ice:panelGrid id="panelGridSpectrumDB" columns="3">
+						<ice:outputLabel id="outputLabelSpectralDB" for="selectSpectralDB" value="Selected Spectral Database:"/>
 						<ice:selectOneMenu id="selectSpectralDB" required="true" value="#{appBean.selectedSpectralDB}" 
 							style="background-color: MintCream;">
 							<f:selectItems value="#{appBean.availableSpectralDBsSI}"/>
 						</ice:selectOneMenu>
-						<ice:panelGroup effect="#{appBean.effectOutputText}">
+						<ice:panelGroup id="panelGroupErrorSpectralDB" effect="#{appBean.effectOutputText}">
     						<ice:message id="errGenericDatabase" for="selectSpectralDB"></ice:message>
     					</ice:panelGroup>
 					</ice:panelGrid>
 					
 					<!-- MassBank settings -->
-					<ice:panelStack selectedPanel="#{appBean.selectedSpectralDB}">
+					<ice:panelStack id="panelStackMassBank" selectedPanel="#{appBean.selectedSpectralDB}">
 				    	<ice:panelGroup id="massbankSettings" style="margin-left: 10px; margin-right: 10px;">
-		    				<ice:outputLabel value="MassBank Parameters" style="text-decoration: underline;"></ice:outputLabel>
+		    				<ice:outputLabel id="outputLabelMBParams" value="MassBank Parameters" style="text-decoration: underline;"></ice:outputLabel>
 		    				<br/>
-		    				<ice:outputLabel value="#{appBean.mblb.serverUrl}"/>
+		    				<ice:outputLabel id="outputLabelMBServerUrl" value="#{appBean.mblb.serverUrl}"/>
 		    				<br/>
-		    				<ice:panelGrid columns="3" style="margin-left: 10px; margin-right: 10px;">
+		    				<ice:panelGrid id="panelGridMassBankServer" columns="3" style="margin-left: 10px; margin-right: 10px;">
 		    					<ice:panelGroup id="lblMBDB" panelTooltip="lblMBDBTooltip">
-		    						<ice:outputLabel value="MassBank Server:"/>
+		    						<ice:outputLabel id="outputLabelMassBankServer" value="MassBank Server:"/>
 		    						<ice:panelTooltip id="lblMBDBTooltip">
-		    							<f:facet name="header">
+		    							<f:facet id="facetMassBankHeader" name="header">
 		    								<ice:outputText value="MassBank Server"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
+		    							<f:facet id="facetMassBankBody" name="body">
 		    								<ice:outputText value="Specify a MassBank server. Default is the japanese one
 		    								at www.massbank.jp."></ice:outputText>
 		    							</f:facet>
 		    						</ice:panelTooltip>
 		    					</ice:panelGroup>
-		    					<ice:panelGroup>
-		    						<ice:selectOneMenu valueChangeListener="#{appBean.mblb.changeDatabase}" value="#{appBean.mblb.selectedServer}">
-		    							<f:selectItems itemLabel="#{n}" itemValue="#{n}" var="n" 
+		    					<ice:panelGroup id="panelGroupMassBankServer">
+		    						<ice:selectOneMenu id="selectOneMenuMassBankServer" valueChangeListener="#{appBean.mblb.changeDatabase}" value="#{appBean.mblb.selectedServer}">
+		    							<f:selectItems id="selectItemsMassBankServer" itemLabel="#{n}" itemValue="#{n}" var="n" 
 											value="#{appBean.mblb.availableServers}" />
 		    						</ice:selectOneMenu>
-		    						<ice:panelGroup effect="#{appBean.effectOutputText}" style="float: right;" 
-		    							rendered="#{appBean.mblb.selectOtherServer}">
+		    						<ice:panelGroup id="panelGroupEffectMassBankServer" effect="#{appBean.effectOutputText}" 
+		    							style="float: right;" rendered="#{appBean.mblb.selectOtherServer}">
 			    						<ice:inputText id="mbServerUrl" rendered="#{appBean.mblb.selectOtherServer}" 
 			    							valueChangeListener="#{appBean.mblb.changeDatabase}" value="#{appBean.mblb.otherServer}"
 			    							partialSubmit="true" immediate="true">
 			    						</ice:inputText>
 		    						</ice:panelGroup>
 		    					</ice:panelGroup>
-		    					<ice:panelGroup effect="#{appBean.effectOutputText}">
+		    					<ice:panelGroup id="panelGroupEffectMassBankServerError" effect="#{appBean.effectOutputText}">
 		    						<ice:message id="errmbServer" for="mbServer"></ice:message>
 		    					</ice:panelGroup>
 		    					
 		    					<ice:panelGroup id="lblMBRslt" panelTooltip="lblMBRsltTooltip">
-		    						<ice:outputLabel value="Number of Results:"></ice:outputLabel>
+		    						<ice:outputLabel id="outputLabelMassBankNumberResults" value="Number of Results:"></ice:outputLabel>
 		    						<ice:panelTooltip id="lblMBRsltTooltip">
-		    							<f:facet name="header">
+		    							<f:facet id="facetMassBankResultsHeader" name="header">
 		    								<ice:outputText value="Number of Results"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
+		    							<f:facet id="facetMassBankResultsBody" name="body">
 		    								<ice:outputText value="Specify the maximum number of results.
 		    								Allowed values are in the range of 1 to 500."></ice:outputText>
 		    							</f:facet>
@@ -104,17 +106,17 @@
 		    						<f:validator validatorId="numberValidator"/>
 		    						<f:validateLongRange minimum="1" maximum="500"></f:validateLongRange>
 		    					</ice:inputText>
-		    					<ice:panelGroup effect="#{appBean.effectOutputText}">
+		    					<ice:panelGroup id="panelGroupMassBankResultError" effect="#{appBean.effectOutputText}">
 		    						<ice:message id="errmbResult" for="mbResult"></ice:message>
 		    					</ice:panelGroup>
 		    					
 		    					<ice:panelGroup id="lblMBCtff" panelTooltip="lblMBCtffTooltip">
 		    						<ice:outputLabel value="Cutoff threshold of relative intensities:"></ice:outputLabel>
 		    						<ice:panelTooltip id="lblMBCtffTooltip">
-		    							<f:facet name="header">
+		    							<f:facet id="facetMassBankCutoffTooltipHeader" name="header">
 		    								<ice:outputText value="Cutoff threshold of relative intensities"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
+		    							<f:facet id="facetMassBankCutoffTooltipBody" name="body">
 		    								<ice:outputText value="Defines the cutoff for small relative intensities.
 		    								Allowed values lie in the range of 0 to 500."></ice:outputText>
 		    							</f:facet>
@@ -126,17 +128,17 @@
 		    						<f:validator validatorId="numberValidator"/>
 		    						<f:validateLongRange minimum="0" maximum="500"></f:validateLongRange>
 		    					</ice:inputText>
-		    					<ice:panelGroup effect="#{appBean.effectOutputText}">
+		    					<ice:panelGroup id="panelgroupMassBankThresholdError" effect="#{appBean.effectOutputText}">
 		    						<ice:message id="errmbThresh" for="mbThresh"></ice:message>
 		    					</ice:panelGroup>
 		    					
 		    					<ice:panelGroup id="lblMBIonMode" panelTooltip="lblMBIonModeTooltip">
-		    						<ice:outputLabel value="Ionization Mode:"></ice:outputLabel>
+		    						<ice:outputLabel id="outputlabelMassBankIonizationMode" value="Ionization Mode:"></ice:outputLabel>
 		    						<ice:panelTooltip id="lblMBIonModeTooltip">
-		    							<f:facet name="header">
+		    							<f:facet id="facetMassBankIonizationModeHeader" name="header">
 		    								<ice:outputText value="Ionization Mode"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
+		    							<f:facet id="facetMassBankIonizationModeBody" name="body">
 		    								<ice:outputText value="Defines the ionization mode for the query spectrum.
 		    								Allowed values are positive mode, negative mode and both modes."></ice:outputText>
 		    							</f:facet>
@@ -149,18 +151,18 @@
 											value="#{appBean.mblb.ionisations}" />
 									</ice:selectOneMenu>
 								</ice:panelGroup>
-								<ice:panelGroup effect="#{appBean.effectOutputText}">
+								<ice:panelGroup id="panelgroupIoniziationError" effect="#{appBean.effectOutputText}">
 		    						<ice:message id="errallIon" for="allIon"></ice:message>
 		    					</ice:panelGroup>
 		    					
 		    					<!-- MS levels -->
 		    					<ice:panelGroup id="lblMBMSLvls" panelTooltip="lblMBMSLvlsTooltip">
-		    						<ice:outputLabel value="MS Levels:"></ice:outputLabel>
+		    						<ice:outputLabel id="outputlabelMassBankMSLevel" value="MS Levels:"></ice:outputLabel>
 		    						<ice:panelTooltip id="lblMBMSLvlsTooltip">
-		    							<f:facet name="header">
+		    							<f:facet id="facetMassBankMSLevelHeader" name="header">
 		    								<ice:outputText value="MS Levels"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
+		    							<f:facet id="facetMassBankMSLevelBody" name="body">
 		    								<ice:outputText value="Specifies which MS level should be used for spectrum search."></ice:outputText>
 		    							</f:facet>
 		    						</ice:panelTooltip>
@@ -188,49 +190,56 @@
 									<ice:panelGroup id="lblMBInstruments" panelTooltip="lblMBInstrumentsTooltip">
 										<ice:outputLabel value="Instruments:"></ice:outputLabel>
 										<ice:panelTooltip id="lblMBInstrumentsTooltip">
-			    							<f:facet name="header">
+			    							<f:facet id="facetMassBankInstrumentsHeader" name="header">
 			    								<ice:outputText value="Instruments"></ice:outputText>
 			    							</f:facet>
-			    							<f:facet name="body">
+			    							<f:facet id="facetMassBankInstrumentsBody" name="body">
 			    								<ice:outputText value="Select the instruments or groups used for lookup of the
 			    								query spectrum. At least one selected instrument is required! Instruments are
 			    								separated into groups EI, ESI and Other."></ice:outputText>
 			    							</f:facet>
 		    							</ice:panelTooltip>
 									</ice:panelGroup>
-									<ice:panelGrid columns="#{appBean.mblb.NUM_INST_GROUPS}" columnClasses="gridSelectItems" id="instruments"
+									<ice:panelGrid id="instruments" columns="#{appBean.mblb.NUM_INST_GROUPS}" 
+										columnClasses="gridSelectItems" 
 										style="text-align: left; margin-left: 187px; border: 1px dotted silver;">
-										<ice:panelGroup rendered="#{appBean.mblb.presentEI}">
+										<ice:panelGroup id="panelgroupMassBankInstrumentsEI" 
+											rendered="#{appBean.mblb.presentEI}">
 <!--											<ice:outputLabel value="EI"/>-->
 <!--											<ice:selectBooleanCheckbox label="EI" value="#{appBean.mblb.useEIOnly}" style="margin-left: 5px;"-->
 <!--												valueChangeListener="#{appBean.mblb.toggleInstrumentsEI}">-->
 <!--												<f:param name="group" value="EI"/>-->
 <!--											</ice:selectBooleanCheckbox>-->
-											<ice:commandLink value="#{appBean.mblb.linkGroupEI}" actionListener="#{appBean.mblb.toggleInstrumentGroup}"
+											<ice:commandLink id="commandLinkMBInstrumentEI" 
+												value="#{appBean.mblb.linkGroupEI}" actionListener="#{appBean.mblb.toggleInstrumentGroup}"
 												style="color: LimeGreen; text-decoration: underline;" immediate="false">
 												<!-- provide a parameter for the actionListener to differentiate the groups -->
 												<f:param value="#{appBean.mblb.getEi()}" name="group"/>
 											</ice:commandLink>
 										</ice:panelGroup>
-										<ice:panelGroup rendered="#{appBean.mblb.presentESI}">
+										<ice:panelGroup id="panelgroupMassBankInstrumentsESI" 
+											rendered="#{appBean.mblb.presentESI}">
 <!--											<ice:outputLabel value="ESI"/>-->
 <!--											<ice:selectBooleanCheckbox label="ESI" value="#{appBean.mblb.useESIOnly}" style="margin-left: 5px;"-->
 <!--												valueChangeListener="#{appBean.mblb.toggleInstrumentsESI}">-->
 <!--												<f:param name="group" value="ESI"/>-->
 <!--											</ice:selectBooleanCheckbox>-->
-											<ice:commandLink value="#{appBean.mblb.linkGroupESI}" actionListener="#{appBean.mblb.toggleInstrumentGroup}"
+											<ice:commandLink id="commandLinkMBInstrumentESI" 
+												value="#{appBean.mblb.linkGroupESI}" actionListener="#{appBean.mblb.toggleInstrumentGroup}"
 												style="color: LimeGreen; text-decoration: underline;" immediate="false">
 												<!-- provide a parameter for the actionListener to differentiate the groups -->
 												<f:param value="#{appBean.mblb.getEsi()}" name="group"/>
 											</ice:commandLink>
 										</ice:panelGroup>
-										<ice:panelGroup rendered="#{appBean.mblb.presentOther}">
+										<ice:panelGroup id="panelgroupMassBankInstrumentsOther" 
+											rendered="#{appBean.mblb.presentOther}">
 <!--											<ice:outputLabel value="Other"/>-->
 <!--											<ice:selectBooleanCheckbox label="Other" value="#{appBean.mblb.useOtherOnly}" style="margin-left: 5px;">-->
 <!--												valueChangeListener="#{appBean.mblb.toggleInstrumentsOther}">-->
 <!--												<f:param name="group" value="Other"/>-->
 <!--											</ice:selectBooleanCheckbox>-->
-											<ice:commandLink value="#{appBean.mblb.linkGroupOTHER}" actionListener="#{appBean.mblb.toggleInstrumentGroup}"
+											<ice:commandLink id="commandLinkMBInstrumentOther" 
+												value="#{appBean.mblb.linkGroupOTHER}" actionListener="#{appBean.mblb.toggleInstrumentGroup}"
 												style="color: LimeGreen; text-decoration: underline;" immediate="false">
 												<!-- provide a parameter for the actionListener to differentiate the groups -->
 												<f:param value="#{appBean.mblb.getOther()}" name="group"/>
@@ -238,7 +247,8 @@
 										</ice:panelGroup>
 										
 										<!-- Select instruments of group EI -->
-										<h:selectManyCheckbox layout="pageDirection" value="#{appBean.mblb.selectedGroupInstruments[appBean.mblb.indexEI]}"
+										<h:selectManyCheckbox id="selectManyCheckboxInstrumentsEI" layout="pageDirection" 
+											value="#{appBean.mblb.selectedGroupInstruments[appBean.mblb.indexEI]}"
 											valueChangeListener="#{appBean.mblb.changeInstruments}" immediate="true"
 											rendered="#{appBean.mblb.presentEI}" style="padding-bottom: 0.625em; padding-right: 0.75em;">
 <!--											validator="de.ipbhalle.metfusion.web.controller.validation.InstrumentValidator">-->
@@ -247,7 +257,8 @@
 										</h:selectManyCheckbox>
 										
 										<!-- Select instruments of group ESI -->
-										<h:selectManyCheckbox layout="pageDirection" value="#{appBean.mblb.selectedGroupInstruments[appBean.mblb.indexESI]}"
+										<h:selectManyCheckbox id="selectManyCheckboxInstrumentsESI" layout="pageDirection" 
+											value="#{appBean.mblb.selectedGroupInstruments[appBean.mblb.indexESI]}"
 											valueChangeListener="#{appBean.mblb.changeInstruments}" immediate="true"
 											rendered="#{appBean.mblb.presentESI}" style="padding-bottom: 0.625em; padding-right: 0.75em;">
 <!--											validator="de.ipbhalle.metfusion.web.controller.validation.InstrumentValidator">-->
@@ -256,7 +267,8 @@
 										</h:selectManyCheckbox>
 										
 										<!-- Select instruments of group Other -->
-										<h:selectManyCheckbox layout="pageDirection" value="#{appBean.mblb.selectedGroupInstruments[appBean.mblb.indexOther]}"
+										<h:selectManyCheckbox id="selectManyCheckboxInstrumentsOther" layout="pageDirection" 
+											value="#{appBean.mblb.selectedGroupInstruments[appBean.mblb.indexOther]}"
 											valueChangeListener="#{appBean.mblb.changeInstruments}" immediate="true"
 											rendered="#{appBean.mblb.presentOther}" style="padding-bottom: 0.625em; padding-right: 0.75em;">
 <!--											validator="de.ipbhalle.metfusion.web.controller.validation.InstrumentValidator">-->
@@ -267,7 +279,7 @@
 								</ice:panelGrid>
 							</ice:panelGroup>
 							
-							<ice:panelGroup>
+							<ice:panelGroup id="panelgroupMassBankInstrumentsError">
 								<ice:message id="errMsgInst" for="instruments"/>
 							</ice:panelGroup>
 							
@@ -275,23 +287,27 @@
 
 						<!-- GMD settings -->
 						<ice:panelGroup id="gmdSettings" style="margin-left: 10px; margin-right: 10px;">
-						<ice:outputLabel value="GMD Parameters" style="text-decoration: underline;"></ice:outputLabel>
+						<ice:outputLabel id="outputlabelGMDParameters" value="GMD Parameters" 
+							style="text-decoration: underline;"></ice:outputLabel>
 		    				<br/>
-		    				<ice:outputLabel value="#{gmdBean.serverUrl}"/>
+		    				<ice:outputLabel id="outputlabelGMDServerURL" value="#{gmdBean.serverUrl}"/>
 		    				<br/>
-		    				<ice:panelGroup style="background-color: Gold; border: 1px solid Orange; margin: 10px;">
-		    					<ice:outputText value="Please note that GMD is queried for derivatized analytes, whereas the results presented here
+		    				<ice:panelGroup id="panelgroupGMDServer" 
+		    					style="background-color: Gold; border: 1px solid Orange; margin: 10px;">
+		    					<ice:outputText id="outputtextGMDInformationAnalytes" 
+		    						value="Please note that GMD is queried for derivatized analytes, whereas the results presented here
 		    					are the corresponding (non-derivatized) metabolites of these analytes!" />
 		    				</ice:panelGroup>
 					    	<ice:panelGrid id="gmdParameters" columns="3" style="margin-left: 10px; margin-right: 10px;">
 					    	
 						    	<ice:panelGroup id="lblGmdRI" panelTooltip="lblGmdRITooltip">
-						    		<ice:outputLabel for="gmdRI" value="Retention Index:"/>
+						    		<ice:outputLabel id="outputlabelGMDRetentionIndex" for="gmdRI" 
+						    			value="Retention Index:"/>
 						    		<ice:panelTooltip id="lblGmdRITooltip">
-						    			<f:facet name="header">
+						    			<f:facet id="facetGMDRetentionIndexHeader" name="header">
 						    				<ice:outputText value="Retention Index"/>
 						    			</f:facet>
-						    			<f:facet name="body">
+						    			<f:facet id="facetGMDRetentionIndexBody" name="body">
 						    				<ice:outputText value="Numeric value for the retention time index. Please note that the retention
 					    					indexes for VAR5 columns are based on n-alkane homologues, whereas indices for MDN35 columns are
 					    					based on fatty acid methyl esthers (FAME)."/>
@@ -303,17 +319,17 @@
 					    			<f:validator validatorId="numberValidator"/>
 					    			<f:validateDoubleRange minimum="0.0"/>
 					    		</ice:inputText>
-					    		<ice:panelGroup effect="#{appBean.effectOutputText}">
+					    		<ice:panelGroup id="panelgroupGMDRetentionIndex" effect="#{appBean.effectOutputText}">
 					    			<ice:message for="gmdRI"/>
 					    		</ice:panelGroup>
 					    	
 					    		<ice:panelGroup id="lblGmdRIwindow" panelTooltip="lblGmdRIwindowTooltip">
-					    			<ice:outputLabel for="gmdRIwindow" value="Retention Index Window:"/>
+					    			<ice:outputLabel id="outputlabelGMDRIWindow" for="gmdRIwindow" value="Retention Index Window:"/>
 					    			<ice:panelTooltip id="lblGmdRIwindowTooltip">
-					    				<f:facet name="">
+					    				<f:facet id="facetGMDRIHeader" name="header">
 					    					<ice:outputText value="Retention Index Window"/>
 					    				</f:facet>
-					    				<f:facet name="body">
+					    				<f:facet id="facetGMDRIBody" name="body">
 					    					<ice:outputText value="Numeric value for the retention index window size."/>
 					    				</f:facet>
 					    			</ice:panelTooltip>
@@ -322,18 +338,19 @@
 					    			<f:validator validatorId="numberValidator"/>
 					    			<f:validateDoubleRange minimum="0.0"/>
 					    		</ice:inputText>
-					    		<ice:panelGroup effect="#{appBean.effectOutputText}">
+					    		<ice:panelGroup id="panelgroupRetentionIndexWindow" effect="#{appBean.effectOutputText}">
 					    			<ice:message for="gmdRIwindow"/>
 					    		</ice:panelGroup>
 					    		
 					    		<ice:panelGroup id="lblGmdColumn" panelTooltip="lblGmdColumnTooltip">
-					    			<ice:outputLabel for="gmdColumn" value="GC-Column Type:"/>
+					    			<ice:outputLabel id="outputlabelGMDColumn" for="gmdColumn" value="GC-Column Type:"/>
 					    			<ice:panelTooltip id="lblGmdColumnTooltip">
-					    				<f:facet name="header">
-					    					<ice:outputText value="Alkane Retention Index GC Column Composition"/>
+					    				<f:facet id="facetGMDColumnHeader" name="header">
+					    					<ice:outputText id="outputtextGMDColumnHeader" value="Alkane Retention Index GC Column Composition"/>
 					    				</f:facet>
-					    				<f:facet name="body">
-					    					<ice:outputText value="Select one of the predefined GC column variants 
+					    				<f:facet id="facetGMDColumnBody" name="body">
+					    					<ice:outputText id="outputtextGMDColumnBody" 
+					    					value="Select one of the predefined GC column variants 
 					    					on which the alkane retention index is based on. Current types are VAR5, MDN35 and none.
 					    					VAR5 is a 5%-phenyl-95%-dimethylpolysiloxane column, while MDN35 is a 35%-phenyl-65%-dimethylpolysiloxane." 
 					    					escape="false"/>
@@ -343,7 +360,7 @@
 					    		<ice:selectOneMenu id="gmdColumn" value="#{gmdBean.stringColumn}" required="true">
 					    			<f:selectItems value="#{gmdBean.availableColumns}"/>
 					    		</ice:selectOneMenu>
-					    		<ice:panelGroup effect="#{appBean.effectOutputText}">
+					    		<ice:panelGroup id="panelgroupGMDColumnEffect" effect="#{appBean.effectOutputText}">
 					    			<ice:message for="gmdColumn"/>
 					    		</ice:panelGroup>
 					    		
@@ -352,19 +369,20 @@
 				    	
 				    	<!-- Metlin settings -->
 				    	<ice:panelGroup id="metlinSettings" style="margin-left: 10px; margin-right: 10px;">
-				    		<ice:outputLabel value="Metlin Parameters" style="text-decoration: underline;"></ice:outputLabel>
+				    		<ice:outputLabel id="outputlabelMetlinParameters" value="Metlin Parameters" 
+				    			style="text-decoration: underline;"></ice:outputLabel>
 		    				<br/>
-		    				<ice:outputLabel value="#{metlinBean.serverUrl}"/>
+		    				<ice:outputLabel id="outputlabelMetlinServerUrl" value="#{metlinBean.serverUrl}"/>
 		    				<br/>
 					    	<ice:panelGrid id="metlinParameters" columns="3" style="margin-left: 10px; margin-right: 10px;">
 					    	
 					    		<ice:panelGroup id="lblMetlinMode" panelTooltip="lblMetlinModeTooltip">
-					    			<ice:outputLabel for="metlinMode" value="Ionization Mode:"/>
+					    			<ice:outputLabel id="outputlabelMetlinMode" for="metlinMode" value="Ionization Mode:"/>
 					    			<ice:panelTooltip id="lblMetlinModeTooltip">
-					    				<f:facet name="header">
+					    				<f:facet id="facetMetlinModeHeader" name="header">
 					    					<ice:outputText value="Ionization Mode"/>
 					    				</f:facet>
-					    				<f:facet name="body">
+					    				<f:facet id="facetMetlinModeBody" name="body">
 					    					<ice:outputText value="Select either positive or negative ionization mode for your query spectrum."/>
 					    				</f:facet>
 					    			</ice:panelTooltip>
@@ -374,39 +392,41 @@
 					    			<f:selectItem itemLabel="positive" itemValue="pos"/>
 					    			<f:selectItem itemLabel="negative" itemValue="neg"/>
 					    		</ice:selectOneRadio>
-					    		<ice:panelGroup effect="#{appBean.effectOutputText}">
-					    			<ice:message for="metlinMode"/>
+					    		<ice:panelGroup id="panelgroupMetlinMode" effect="#{appBean.effectOutputText}">
+					    			<ice:message id="messageMetlinMode" for="metlinMode"/>
 					    		</ice:panelGroup>
 					    		
 					    		<ice:panelGroup id="lblMetlinColEnergy" panelTooltip="lblMetlinColEnergyTooltip">
-					    			<ice:outputLabel for="metlinColEnergy" value="Collision Energy:"/>
+					    			<ice:outputLabel id="outputlabelMetlinColEnergy" for="metlinColEnergy" 
+					    				value="Collision Energy:"/>
 					    			<ice:panelTooltip id="lblMetlinColEnergyTooltip">
-					    				<f:facet name="header">
-					    					<ice:outputText value="Collision Energy"/>
+					    				<f:facet id="facetMetlinColEnergyHeader" name="header">
+					    					<ice:outputText id="outputTextMetlinColEnergyHeader" value="Collision Energy"/>
 					    				</f:facet>
-					    				<f:facet name="body">
-					    					<ice:outputText value="Specify the collision energy for the spectrum query. 
+					    				<f:facet id="facetMetlinColEnergyBody" name="body">
+					    					<ice:outputText id="outputTextMetlinColEnergyBody" value="Specify the collision energy for the spectrum query. 
 					    					Choose between 10, 20 and 40 eV."/>
 					    				</f:facet>
 					    			</ice:panelTooltip>
 					    		</ice:panelGroup>
 					    		<ice:selectOneMenu id="metlinColEnergy" required="true" value="#{metlinBean.collisionEnergy}">
-					    			<f:selectItem itemLabel="10 eV" itemValue="10"/>
-					    			<f:selectItem itemLabel="20 eV" itemValue="20"/>
-					    			<f:selectItem itemLabel="40 eV" itemValue="40"/>
+					    			<f:selectItem id="selectItemMetlinColEnergy10eV" itemLabel="10 eV" itemValue="10"/>
+					    			<f:selectItem id="selectItemMetlinColEnergy20eV" itemLabel="20 eV" itemValue="20"/>
+					    			<f:selectItem id="selectItemMetlinColEnergy40eV" itemLabel="40 eV" itemValue="40"/>
 					    		</ice:selectOneMenu>
-					    		<ice:panelGroup effect="#{appBean.effectOutputText}">
-					    			<ice:message for="metlinColEnergy"/>
+					    		<ice:panelGroup id="panelgroupMetlinColEnergy" effect="#{appBean.effectOutputText}">
+					    			<ice:message id="messageMetlinColEnergy" for="metlinColEnergy"/>
 					    		</ice:panelGroup>
 					    		
 					    		<ice:panelGroup id="lblMetlinTolMS" panelTooltip="lblMetlinTolMSTooltip">
-					    			<ice:outputLabel for="metlinToleranceMSMS" value="Tolerance MSMS (Da):"/>
+					    			<ice:outputLabel id="outputlabelMetlingTolMS" for="metlinToleranceMSMS" 
+					    				value="Tolerance MSMS (Da):"/>
 					    			<ice:panelTooltip id="lblMetlinTolMSTooltip">
-					    				<f:facet name="header">
-					    					<ice:outputText value="Tolerance MSMS"/>
+					    				<f:facet id="facetMetlinTolMSHeader" name="header">
+					    					<ice:outputText id="outputtextMetlinTolMSTooltipHeader" value="Tolerance MSMS"/>
 					    				</f:facet>
-					    				<f:facet name="body">
-					    					<ice:outputText value="Specifies the tolerance of the MSMS data. 
+					    				<f:facet id="facetMetlinTolMSBody" name="body">
+					    					<ice:outputText id="outputtextMetlinTolMSTooltipBody" value="Specifies the tolerance of the MSMS data. 
 					    					Must be between 0.001 and 0.5. Units are Da. "/>
 					    				</f:facet>
 					    			</ice:panelTooltip>
@@ -415,18 +435,21 @@
 					    			<f:validator validatorId="numberValidator"/>
 					    			<f:validateDoubleRange minimum="0.001" maximum="0.5"/>
 					    		</ice:inputText>
-					    		<ice:panelGroup effect="#{appBean.effectOutputText}">
-					    			<ice:message for="metlinToleranceMSMS"/>
+					    		<ice:panelGroup id="panelgroupMetlinTolMS" effect="#{appBean.effectOutputText}">
+					    			<ice:message id="messageMetlinTolMS" for="metlinToleranceMSMS"/>
 					    		</ice:panelGroup>
 					    		
 					    		<ice:panelGroup id="lblMetlinTolPrecursor" panelTooltip="lblMetlinTolPrecursorTooltip">
-					    			<ice:outputLabel for="metlinTolerancePrecursor" value="Tolerance Precursor (ppm):"/>
+					    			<ice:outputLabel id="outputlabelMetlinTolPrecursor" for="metlinTolerancePrecursor" 
+					    				value="Tolerance Precursor (ppm):"/>
 					    			<ice:panelTooltip id="lblMetlinTolPrecursorTooltip">
-					    				<f:facet name="header">
-					    					<ice:outputText value="Tolerance Precursor"/>
+					    				<f:facet id="facetMetlinTolPrecursorHeader" name="header">
+					    					<ice:outputText id="outputtextMetlinTolPrecursorHeader" 
+					    						value="Tolerance Precursor"/>
 					    				</f:facet>
-					    				<f:facet name="body">
-					    					<ice:outputText value="Specifies the tolerance of the precursor. 
+					    				<f:facet id="facetMetlinTolPrecursorBody" name="body">
+					    					<ice:outputText id="outputtextMetlinTolPrecursorBody"  
+					    					value="Specifies the tolerance of the precursor. 
 					    					Must be between 1 and 100. Units are ppm. "/>
 					    				</f:facet>
 					    			</ice:panelTooltip>
@@ -435,46 +458,54 @@
 					    			<f:validator validatorId="numberValidator"/>
 					    			<f:validateLongRange minimum="1" maximum="100"/>
 					    		</ice:inputText>
-					    		<ice:panelGroup effect="#{appBean.effectOutputText}">
-					    			<ice:message for="metlinTolerancePrecursor"/>
+					    		<ice:panelGroup id="panelgroupMetlinTolPrecursor" effect="#{appBean.effectOutputText}">
+					    			<ice:message id="messageMetlinTolPrecursor" for="metlinTolerancePrecursor"/>
 					    		</ice:panelGroup>
 					    		
 					    	</ice:panelGrid>
 				    	</ice:panelGroup>
 				    	
-				    	<ice:panelGroup>
+				    	<ice:panelGroup id="panelGroupErrorMessages">
 							<ice:messages id="errMsgs" style="background-color: Orange;"/>
 						</ice:panelGroup>
 				    	
 				    	</ice:panelStack>
 				    	<br/>
-				    	<ice:panelGroup style="margin-left: 10px; margin-right: 10px; clear: both;">
-				    		<ice:outputLabel value="MetFrag Parameters" style="text-decoration: underline;"/>
-				    		<ice:panelGroup effect="#{appBean.effectNote}" style="float: right;">
-			    				<ice:outputText style="margin-left: 10px; color: Orange;" value="#{appBean.metfragModeSetting}" escape="false"/>
+				    	<ice:panelGroup id="panelgroupMetFragParameters" 
+				    		style="margin-left: 10px; margin-right: 10px; clear: both;">
+				    		<ice:outputLabel id="outputlabelMetFragParameters" value="MetFrag Parameters" 
+				    			style="text-decoration: underline;"/>
+				    		<ice:panelGroup id="panelgroupMetfragModeSettings" effect="#{appBean.effectNote}" 
+				    			style="float: right;">
+			    				<ice:outputText id="outputtextMetfragModeSetting" style="margin-left: 10px; color: Orange;" 
+			    					value="#{appBean.metfragModeSetting}" escape="false"/>
 			    			</ice:panelGroup>
 				    		<br/>
-				    		<ice:panelGrid columns="3" columnClasses="labels, text, errors" style="margin-left: 10px; margin-right: 10px;">
+				    		<ice:panelGrid id="panelgridMetfragParameters" columns="3" columnClasses="labels, text, errors" 
+				    			style="margin-left: 10px; margin-right: 10px;">
 				    			
 				    			<!-- Select MetFrag upstream database -->
 				    			<ice:panelGroup id="lblMFDatabase" panelTooltip="lblMFDatabaseTooltip">
-									<ice:outputLabel for="metfragDatabases" value="Upstream DB:"></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragDatabase" for="metfragDatabases" 
+										value="Upstream DB:"></ice:outputLabel>
 									<ice:panelTooltip id="lblMFDatabaseTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Upstream Database"></ice:outputText>
+		    							<f:facet id="facetMetfragDatabaseHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragDatabaseHeader"
+		    									value="Upstream Database"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Select the compound database to query. A choice is required!
+		    							<f:facet id="facetMetfragDatabaseBody" name="body">
+		    								<ice:outputText id="outputtextMetfragDatabaseBody" 
+		    								value="Select the compound database to query. A choice is required!
 		    								Possible choices include KEGG, PubChem and ChemSpider."></ice:outputText>
 		    							</f:facet>
 	    							</ice:panelTooltip>
 								</ice:panelGroup>
 								<ice:selectOneRadio value="#{appBean.mfb.selectedDB}" id="metfragDatabases"
 										partialSubmit="true" required="true" valueChangeListener="#{appBean.mfb.changeDatabase}">
-									<f:selectItems itemLabel="#{n.label}" itemValue="#{n.value}" var="n" 
-										value="#{appBean.mfb.databases}" />
+									<f:selectItems id="selectitemMetfragDatabase" itemLabel="#{n.label}" 
+										itemValue="#{n.value}" var="n" value="#{appBean.mfb.databases}" />
 								</ice:selectOneRadio>
-								<ice:panelGroup effect="#{appBean.effectOutputText}">
+								<ice:panelGroup id="panelgroupMetfragDatabasesError" effect="#{appBean.effectOutputText}">
 									<ice:message id="errmetfragDatabases" for="metfragDatabases"></ice:message>
 								</ice:panelGroup>
 								
@@ -509,20 +540,22 @@
 								
 								<!-- provide database identifiers -->
 								<ice:panelGroup id="lblMFDBID" panelTooltip="lblMFDBIDTooltip" rendered="#{!appBean.mfb.renderSDF}">
-									<ice:outputLabel for="dbID" value="Database IDs:"></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragDBIds" for="dbID" value="Database IDs:"></ice:outputLabel>
 									<ice:panelTooltip id="lblMFDBIDTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Database IDs"></ice:outputText>
+		    							<f:facet id="facetMetfragDBIdsHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragDBIdsHeader" value="Database IDs"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Optionally provide known comma-separated list of 
+		    							<f:facet id="facetMetfragDBIdsBody" name="body">
+		    								<ice:outputText id="outputtextMetfragDBIdsBody" 
+		    									value="Optionally provide known comma-separated list of 
 		    									database identifiers for the selected compound database. 
 		    									Only provided identifiers are used for the query! "></ice:outputText>
 		    							</f:facet>
 	    							</ice:panelTooltip>
 								</ice:panelGroup>
 								<ice:inputText id="dbID" value="#{appBean.mfb.databaseID}" rendered="#{!appBean.mfb.renderSDF}"></ice:inputText>
-								<ice:panelGroup effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
+								<ice:panelGroup id="panelgroupMetfragDatabaseIdsError" effect="#{appBean.effectOutputText}" 
+									rendered="#{!appBean.mfb.renderSDF}">
 									<ice:message id="errdbID" for="dbID"></ice:message>
 								</ice:panelGroup>
 								
@@ -530,30 +563,35 @@
 								<ice:panelGroup id="lblMFSumFormula" panelTooltip="lblMFSumFormulaTooltip" rendered="#{!appBean.mfb.renderSDF}">
 									<ice:outputLabel for="sumFormula" value="Molecular Formula:"></ice:outputLabel>
 									<ice:panelTooltip id="lblMFSumFormulaTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Molecular Formula"></ice:outputText>
+		    							<f:facet id="facetMetfragMolFormulaHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragMolFormulaHeader"
+		    									value="Molecular Formula"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Optionally provide one known molecular formula.
+		    							<f:facet id="facetMetfragMolFormulaBody" name="body">
+		    								<ice:outputText id="outputtextMetfragMolFormulaBody" 
+		    									value="Optionally provide one known molecular formula.
 		    									An example would be C6H12O6."></ice:outputText>
 		    							</f:facet>
 	    							</ice:panelTooltip>
 								</ice:panelGroup>
 								<ice:inputText id="sumFormula" value="#{appBean.mfb.molecularFormula}" rendered="#{!appBean.mfb.renderSDF}"
 									valueChangeListener="#{appBean.mfb.changeFormula}"></ice:inputText>
-								<ice:panelGroup effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
+								<ice:panelGroup id="panelgroupMetfragSumFormulaError" 
+									effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
 									<ice:message id="errsumFormula" for="sumFormula"></ice:message>
 								</ice:panelGroup>
 								
 								<!-- specify the mass of the parent ion and adduct -->
 								<ice:panelGroup id="lblMFParentIon" panelTooltip="lblMFParentIonTooltip" rendered="#{!appBean.mfb.renderSDF}">
-									<ice:outputLabel for="parentIon" value="Parent Ion:" style=""></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragParentIon" for="parentIon" 
+										value="Parent Ion:" style=""></ice:outputLabel>
 									<ice:panelTooltip id="lblMFParentIonTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Parent Ion"></ice:outputText>
+		    							<f:facet id="facetMetfragParentIonHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragParentIonHeader" value="Parent Ion"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Calculated mass of the parent ion. First provide the mass of the ion, 
+		    							<f:facet id="facetMetfragParentIonBody" name="body">
+		    								<ice:outputText id="outputtextMetfragParentIonBody" 
+		    									value="Calculated mass of the parent ion. First provide the mass of the ion, 
 		    									then select which type of adduct was formed in order to calculate the corresponding exact mass."/>
 		    								<br/>
 		    								<ice:outputLink id="fiehnAdductList"  target="_blank" style="text-decoration: underline;"
@@ -563,7 +601,7 @@
 		    							</f:facet>
 	    							</ice:panelTooltip>
 								</ice:panelGroup>
-								<ice:panelGroup rendered="#{!appBean.mfb.renderSDF}">
+								<ice:panelGroup id="panelgroupMetfragParentIon" rendered="#{!appBean.mfb.renderSDF}">
 									<ice:inputText id="parentIon" value="#{appBean.mfb.parentIon}" partialSubmit="true" required="true"									
 										validatorMessage="Value is not between 10 and 10000.0" valueChangeListener="#{appBean.mfb.changeParentIon}"
 										disabled="#{appBean.mfb.viaFormula}">
@@ -572,23 +610,25 @@
 									</ice:inputText>
 									<ice:selectOneMenu id="selectAdduct" valueChangeListener="#{appBean.mfb.changeAdduct}"
 										value="#{appBean.mfb.selectedAdduct}" disabled="#{appBean.mfb.viaFormula}">
-										<f:selectItems value="#{appBean.mfb.adductList}" var="adduct"
+										<f:selectItems id="selectitemsMetfragAdductList" value="#{appBean.mfb.adductList}" var="adduct"
 											itemLabel="#{adduct.label}" itemValue="#{adduct.value}"/>
 									</ice:selectOneMenu>
 								</ice:panelGroup>
-								<ice:panelGroup effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
+								<ice:panelGroup id="panelgroupMetfragParentIonError" effect="#{appBean.effectOutputText}" 
+									rendered="#{!appBean.mfb.renderSDF}">
 									<ice:message id="errparentIon" for="parentIon"></ice:message>
 								</ice:panelGroup>
 								
 								<!-- show the computed exact mass of the precursor molecule -->
 								<ice:panelGroup id="lblMFExactMass" panelTooltip="lblMFExactMassTooltip" rendered="#{!appBean.mfb.renderSDF}">
-									<ice:outputLabel for="exactMass" value="Exact Mass:" style=""></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragExactMass" for="exactMass" value="Exact Mass:" style=""></ice:outputLabel>
 									<ice:panelTooltip id="lblMFExactMassTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Exact Mass"></ice:outputText>
+		    							<f:facet id="facetMetfragExactMassHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragExactMassHeader" value="Exact Mass"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Required exact mass for candidate of interest. For metabolomic scope,
+		    							<f:facet id="facetMetfragExactMassBody" name="body">
+		    								<ice:outputText id="outputtextMetfragExactMassBody" 
+		    									value="Required exact mass for candidate of interest. For metabolomic scope,
 		    									it ranges from 1 to 10000."></ice:outputText>
 		    							</f:facet>
 	    							</ice:panelTooltip>
@@ -600,20 +640,21 @@
 									<f:validator validatorId="numberValidator"/>
 									<f:validateDoubleRange minimum="10.0" maximum="10000.0"></f:validateDoubleRange>
 								</ice:inputText>
-								<ice:panelGroup effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
+								<ice:panelGroup id="panelgroupMetfragExactMassError" effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
 									<ice:message id="errexactMass" for="exactMass"></ice:message>
 								</ice:panelGroup>
 								
 								<!-- limit the number of MetFrag results -->
 								<ice:panelGroup id="lblMFLimit" panelTooltip="lblMFLimitTooltip" rendered="#{!appBean.mfb.renderSDF}">
-									<ice:outputLabel for="candLimit" value="Limit # of Structures:"></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragCandLimit" for="candLimit" value="Limit # of Structures:"></ice:outputLabel>
 									<ice:panelTooltip id="lblMFLimitTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Limit # of Structures"></ice:outputText>
+		    							<f:facet id="facetMetfragCandLimitHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragCandLimitHeader" 
+		    									value="Limit # of Structures"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Required maximum value of candidates. The limit
-		    									ranges from 1 to 10000."></ice:outputText>
+		    							<f:facet id="facetMetfragCandLimitBody" name="body">
+		    								<ice:outputText id="outputtextMetfragCandLimitBody"  
+		    									value="Required maximum value of candidates. The limit ranges from 1 to 10000."></ice:outputText>
 		    							</f:facet>
 	    							</ice:panelTooltip>
 								</ice:panelGroup>
@@ -622,37 +663,41 @@
 									<f:validator validatorId="numberValidator"/>
 									<f:validateLongRange minimum="1" maximum="10000" for="candLimit"></f:validateLongRange>
 								</ice:inputText>
-								<ice:panelGroup effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
+								<ice:panelGroup id="panelgroupMetfragCandLimitError" effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
 									<ice:message id="errcandLimit" for="candLimit"></ice:message>
 								</ice:panelGroup>
 								
 								<!-- specify biological (C,H,N,O,P,S) compounds only or not -->
 								<ice:panelGroup id="lblMFchnops" panelTooltip="lblMFchnopsTooltip" rendered="#{!appBean.mfb.renderSDF}">
-									<ice:outputLabel for="chnopsOnly" value="C,H,N,O,P,S only?"></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragCHNOPS" for="chnopsOnly" value="C,H,N,O,P,S only?"></ice:outputLabel>
 									<ice:panelTooltip id="lblMFchnopsTooltip">
-										<f:facet name="header">
-											<ice:outputText value="Retrieve only biological compounds"></ice:outputText>
+										<f:facet id="facetMetfragCHNOPSHeader" name="header">
+											<ice:outputText id="outputtextMetfragCHNOPSHeader" 
+												value="Retrieve only biological compounds"></ice:outputText>
 										</f:facet>
-										<f:facet name="body">
-											<ice:outputText value="Specify if only compounds that contain C,H,N,O,P and S 
+										<f:facet id="facetMetfragCHNOPSBody" name="body">
+											<ice:outputText id="outputtextMetfragCHNOPSBody" 
+												value="Specify if only compounds that contain C,H,N,O,P and S 
 											are considered (check), or not (uncheck)."></ice:outputText>
 										</f:facet>
 									</ice:panelTooltip>
 								</ice:panelGroup>
 								<ice:selectBooleanCheckbox id="chnopsOnly" value="#{appBean.mfb.onlyCHNOPS}" rendered="#{!appBean.mfb.renderSDF}"/>
-								<ice:panelGroup effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
+								<ice:panelGroup id="panelgroupMetfragCHNOPSOnlyError" effect="#{appBean.effectOutputText}" 
+									rendered="#{!appBean.mfb.renderSDF}">
 									<ice:message id="errchnopsOnly" for="chnopsOnly"></ice:message>
 								</ice:panelGroup>
 								
 								<!-- specify search ppm parameter -->
 								<ice:panelGroup id="lblMFSeachPPM" panelTooltip="lblMFSeachPPMTooltip" rendered="#{!appBean.mfb.renderSDF}">
-									<ice:outputLabel for="searchppm" value="Search PPM:"></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragSearchPPM" for="searchppm" value="Search PPM:"></ice:outputLabel>
 									<ice:panelTooltip id="lblMFSeachPPMTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Search PPM"></ice:outputText>
+		    							<f:facet id="facetMetfragSearchPPMHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragSearchPPMHeader" value="Search PPM"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Required deviation for exact mass lookup. 
+		    							<f:facet id="facetMetfragSearchPPMBody" name="body">
+		    								<ice:outputText id="outputtextMetfragSearchPPMBody" 
+		    								value="Required deviation for exact mass lookup. 
 		    								Usually, this value should not exceed 30 ppm as this would lead to much more candidates.
 		    								The allowed range is between 0.0 and 100. This value depends on the mass 
 		    								accuracy of the used MS device."></ice:outputText>
@@ -664,19 +709,21 @@
 									<f:validator validatorId="numberValidator"/>
 									<f:validateDoubleRange minimum="0.0" maximum="100.0" for="searchppm"/>
 								</ice:inputText>
-								<ice:panelGroup effect="#{appBean.effectOutputText}" rendered="#{!appBean.mfb.renderSDF}">
+								<ice:panelGroup id="panelgroupMetfragSearchPPMError" effect="#{appBean.effectOutputText}" 
+									rendered="#{!appBean.mfb.renderSDF}">
 									<ice:message id="errsearchppm" for="searchppm"></ice:message>
 								</ice:panelGroup>
 								
 								<!-- specify mz abs parameter -->
 								<ice:panelGroup id="lblMFMZabs" panelTooltip="lblMFMZabsTooltip">
-									<ice:outputLabel for="mzabs" value="mz abs:"></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragMzAbs" for="mzabs" value="mz abs:"></ice:outputLabel>
 									<ice:panelTooltip id="lblMFMZabsTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="mz abs"></ice:outputText>
+		    							<f:facet id="facetMetfragMzAbsHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragMzAbsHeader" value="mz abs"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Required absolute deviation of fragment peaks that should be matched. 
+		    							<f:facet id="facetMetfragMzAbsBody" name="body">
+		    								<ice:outputText id="outputtextMetfragMzAbsBody" 
+		    								value="Required absolute deviation of fragment peaks that should be matched. 
 		    								Usually, this value should be fairly small (less than 1). The allowed range is between 0.0 and 100.">
 		    								</ice:outputText>
 		    							</f:facet>
@@ -687,19 +734,20 @@
 									<f:validator validatorId="numberValidator"/>
 									<f:validateDoubleRange minimum="0.0" maximum="100.0" for="mzabs"/>
 								</ice:inputText>
-								<ice:panelGroup effect="#{appBean.effectOutputText}">
+								<ice:panelGroup id="panelgroupMetfragMzAbsError" effect="#{appBean.effectOutputText}">
 									<ice:message id="errmzabs" for="mzabs"></ice:message>
 								</ice:panelGroup>
 								
 								<!-- specify mz ppm parameter -->
 								<ice:panelGroup id="lblMFMZppm" panelTooltip="lblMFMZppmTooltip">
-									<ice:outputLabel for="mzppm" value="mz ppm:"></ice:outputLabel>
+									<ice:outputLabel id="outputlabelMetfragMzPPM" for="mzppm" value="mz ppm:"></ice:outputLabel>
 									<ice:panelTooltip id="lblMFMZppmTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="mz ppm"></ice:outputText>
+		    							<f:facet id="facetMetfragMzPPMHeader" name="header">
+		    								<ice:outputText id="outputtextMetfragMzPPMHeader" value="mz ppm"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Required relative deviation of fragment peaks that should be matched. 
+		    							<f:facet id="facetMetfragMzPPMBody" name="body">
+		    								<ice:outputText id="outputtextMetfragMzPPMBody" 
+		    								value="Required relative deviation of fragment peaks that should be matched. 
 		    								Usually, this value should be fairly small (less than 30). The allowed range is between 0.0 and 100.
 		    								This value depends on the mass accuracy of the used MS device.">
 		    								</ice:outputText>
@@ -711,7 +759,7 @@
 									<f:validator validatorId="numberValidator"/>
 									<f:validateDoubleRange minimum="0.0" maximum="100.0" for="mzppm"/>
 								</ice:inputText>
-								<ice:panelGroup effect="#{appBean.effectOutputText}">
+								<ice:panelGroup id="panelgroupMetfragMzPPMError" effect="#{appBean.effectOutputText}">
 									<ice:message id="errmzppm" for="mzppm"></ice:message>
 								</ice:panelGroup>
 							</ice:panelGrid>
@@ -721,18 +769,22 @@
 			    	
 			    	<!-- MetFusion parameters -->
 			    	<div id="fusionParams" style=" padding: 0 1em; border: 1px dashed silver; width: 30%; float: right;">
-				    	<ice:panelGroup>
-				    		<ice:outputLabel value="MetFusion Parameters" style="text-decoration: underline;"></ice:outputLabel>
+				    	<ice:panelGroup id="panelgroupMetfusionParameters">
+				    		<ice:outputLabel id="outputlabelMetfusionParamters" value="MetFusion Parameters" 
+				    			style="text-decoration: underline;"></ice:outputLabel>
 				    		<br/>
-				    		<ice:panelGrid columns="2" style="margin-left: 10px; margin-right: 10px;">
+				    		<ice:panelGrid id="panelgridMetfusionParameters" columns="2" 
+				    			style="margin-left: 10px; margin-right: 10px;">
 				    			<ice:panelGroup id="lblMetFusionCluster" panelTooltip="lblMetFusionClusterTooltip" rendered="false">
-					    			<ice:outputLabel for="SlctClstr" value="Tanimoto Clustering:" style="line-height:200%"></ice:outputLabel>
+					    			<ice:outputLabel id="outputlabelMetfusionCluster" for="SlctClstr" value="Tanimoto Clustering:" style="line-height:200%"></ice:outputLabel>
 					    			<ice:panelTooltip id="lblMetFusionClusterTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Tanimoto Clustering"></ice:outputText>
+		    							<f:facet id="facetMetfusionCluterHeader" name="header">
+		    								<ice:outputText id="outputtextMetfusionCluterHeader" 
+		    									value="Tanimoto Clustering"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="deprecated - Optionally choose if clustering should be 
+		    							<f:facet id="facetMetfusionCluterBody" name="body">
+		    								<ice:outputText id="outputtextMetfusionCluterBody" 
+		    									value="deprecated - Optionally choose if clustering should be 
 		    									applied to results. As only clustered results are provided, this is redundant.">
 		    								</ice:outputText>
 		    							</f:facet>
@@ -742,13 +794,15 @@
 									disabled="true" rendered="false"/>
 		    					
 		    					<ice:panelGroup id="lblMetFusionFilter" panelTooltip="lblMetFusionFilterTooltip">
-					    			<ice:outputLabel for="SlctFltr" value="Filter Unique:" style="line-height:200%"></ice:outputLabel>
+					    			<ice:outputLabel id="outputlabeMetfusionFilter" for="SlctFltr" value="Filter Unique:" style="line-height:200%"></ice:outputLabel>
 					    			<ice:panelTooltip id="lblMetFusionFilterTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="InChI-based Filtering"></ice:outputText>
+		    							<f:facet id="facetMetfusionFilterHeader" name="header">
+		    								<ice:outputText id="outputtextMetfusionFilterHeader" 
+		    									value="InChI-based Filtering"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Optionally choose if results shall be filtered. This step removes 
+		    							<f:facet id="facetMetfusionFilterBody" name="body">
+		    								<ice:outputText id="outputtextMetfusionFilterBody" 
+		    								value="Optionally choose if results shall be filtered. This step removes 
 		    								steroeisomeric compounds from MetFrag and duplicate spectra from MassBank.">
 		    								</ice:outputText>
 		    							</f:facet>
@@ -757,13 +811,14 @@
 								<ice:selectBooleanCheckbox id="SlctFltr" partialSubmit="true" value="#{appBean.useInChIFiltering}"/>
 		    					
 		    					<ice:panelGroup id="lblMetFusionPeaks" panelTooltip="lblMetFusionPeaksTooltip">
-		    						<ice:outputLabel value="Peaks:"></ice:outputLabel>
+		    						<ice:outputLabel id="outputlabelMetfusionPeaks" value="Peaks:"></ice:outputLabel>
 		    						<ice:panelTooltip id="lblMetFusionPeaksTooltip">
-		    							<f:facet name="header">
-		    								<ice:outputText value="Peaks"></ice:outputText>
+		    							<f:facet id="facetMetfusionPeaksHeader" name="header">
+		    								<ice:outputText id="outputtextetfusionPeaksHeader" value="Peaks"></ice:outputText>
 		    							</f:facet>
-		    							<f:facet name="body">
-		    								<ice:outputText value="Each peak and its intensity (separated by space/tab) one line: 
+		    							<f:facet id="facetMetfusionPeaksBody" name="body">
+		    								<ice:outputText id="outputtextetfusionPeaksBody"
+		    								value="Each peak and its intensity (separated by space/tab) one line: 
 		    								[m/z] [intensity] e.g.: 119.051 467.616.">
 		    								</ice:outputText>
 		    							</f:facet>
@@ -776,13 +831,13 @@
 									<f:converter converterId="de.ipbhalle.metfusion.web.controller.validation.SpectrumConverter"/>
 								</ice:inputTextarea>
 	    					</ice:panelGrid>
-	    					<ice:panelGroup effect="#{appBean.effectOutputText}">
+	    					<ice:panelGroup id="panelgroupMetfusionPeaksError" effect="#{appBean.effectOutputText}">
 	    						<ice:message id="errallPeaks" for="allPeaks" style="font-color: red;"></ice:message>
 							</ice:panelGroup>
 				    	</ice:panelGroup>
 			    	</div>
 			    	
-			    	<div style=" padding: 0 1em; border: 1px dotted silver; width: 30%; float: right; margin-top: 5px;">
+			    	<div id="divMetfusionProgress" style=" padding: 0 1em; border: 1px dotted silver; width: 30%; float: right; margin-top: 5px;">
 				    	<ice:panelGroup id="progressDatabase" effect="#{appBean.effect}" visible="false">
 							<ice:outputProgress id="progressDatabaseSearch" value="#{appBean.genericDatabase.searchProgress}" 
 								label="#{appBean.genericDatabase.databaseName} retrieval: #{appBean.genericDatabase.searchProgress}%" 
@@ -790,7 +845,7 @@
 							<ice:outputProgress id="progressFragmenterSearch" value="#{fragmenterBean.progress}" 
 								label="MetFrag retrieval: #{fragmenterBean.progress}%" labelComplete="MetFrag retrieval done!"/>
 						</ice:panelGroup>
-						<ice:panelGroup>
+						<ice:panelGroup id="panelgroupGlobalProgress">
 <!--							<ice:commandButton value="Start" action="#{appBean.runThreadedVersion}" disabled="#{!appBean.enableStart}"/>-->
 <!--							<ice:commandButton id="reset" value="Reset" actionListener="#{appBean.reset}"></ice:commandButton>-->
 							<ice:outputProgress id="progressGlobal" value="#{appBean.percentProgressGlobal}" 
@@ -802,7 +857,8 @@
 			    	
 			    	<!-- application control start and reset -->
 			    	<div id="command" style="clear: both; float: left;">
-			    		<h:commandButton value="Start" action="#{appBean.runThreadedVersion}" disabled="#{!appBean.enableStart}"/>
+			    		<h:commandButton id="commandButtonStart" value="Start" 
+			    			action="#{appBean.runThreadedVersion}" disabled="#{!appBean.enableStart}"/>
 <!--				    	<ice:commandButton id="start" value="Start" action="#{appBean.runBoth}"></ice:commandButton>-->
 <!--				   actionListener="#{appBean.runBoth}" 	-->
 <!--						<ice:commandButton value="Stop" action="#{appBean.stopExecution}" rendered="#{!appBean.enableStart}"/>-->
@@ -816,17 +872,18 @@
 							immediate="false" style="float: right; text-decoration: underline; color: silver;"/>	
 						<ice:panelPopup id="popupAdminFeedback" modal="false" rendered="#{feedbackBean.feedbackAdminRendered}"
 							autoCentre="true">
-							<f:facet name="header">
-								<ice:outputText value="MetFusion Feedback Admin"/>
-								<ice:commandButton image="images/close.png" action="#{feedbackBean.closeFeedbackAdminPopup}" 
+							<f:facet id="facetFeedbackHeader" name="header">
+								<ice:outputText id="outputtextFeedbackHeader" value="MetFusion Feedback Admin"/>
+								<ice:commandButton id="commandbuttonFeadbackHeader" image="images/close.png" 
+									action="#{feedbackBean.closeFeedbackAdminPopup}" 
 									immediate="false" style="float: right;"/>
 							</f:facet>
 							
-							<f:facet name="body">
+							<f:facet id="facetFeedbackBody" name="body">
 								<!-- this single outer panelGroup is required in order to render the content properly -->
-								<ice:panelGroup>
+								<ice:panelGroup id="panelgroupFeedbackWorkaround">
 								<ice:panelGroup id="feedbackAdminLogin" rendered="#{!feedbackBean.authorized}">
-									<ice:panelGrid columns="2">
+									<ice:panelGrid id="panelgridFeedback" columns="2">
 										<ice:outputLabel id="labelFeedbackAdminUser" value="Username:" for="textFeedbackAdminUser"/>
 										<ice:inputText id="textFeedbackAdminUser" value="#{feedbackBean.providedName}"/>
 
@@ -842,13 +899,13 @@
 									<ice:dataTable id="feedbackTable" value="#{feedbackBean.feedbackEntries}" var="entry"
 										rendered="#{feedbackBean.authorized}" rows="10">
 										<ice:column>
-											<f:facet name="header">
+											<f:facet id="facetFeedbackDateHeader" name="header">
 												Date
 											</f:facet>
 											#{entry.date}
 										</ice:column>
 										<ice:column>
-											<f:facet name="header">
+											<f:facet id="facetFeedbackContactHeader" name="header">
 												Contact
 											</f:facet>
 											#{entry.name}
@@ -856,28 +913,29 @@
 											#{entry.email}
 										</ice:column>
 										<ice:column>
-											<f:facet name="header">
+											<f:facet id="facetFeedbackCommentHeader" name="header">
 												Comment
 											</f:facet>
 											#{entry.comment}
 										</ice:column>
 										<ice:column>
-											<f:facet name="header">
+											<f:facet id="facetFeedbackAnsweredHeader" name="header">
 												Answered
 											</f:facet>
 											#{entry.answered}
 										</ice:column>
 										<ice:column>
-											<f:facet name="header">
+											<f:facet id="facetFeedbackFixedHeader" name="header">
 												Fixed
 											</f:facet>
 											#{entry.fixed}
 										</ice:column>
 										<ice:column>
-											<f:facet name="header">
+											<f:facet id="facetFeedbackActionsHeader" name="header">
 												Actions
 											</f:facet>
-											<ice:commandLink value="Show Values" style="text-decoration: underline;"
+											<ice:commandLink id="commandlinkFeedbackShowValues" value="Show Values" 
+												style="text-decoration: underline;"
 												actionListener="#{feedbackBean.feedbackRowSelectionListener}">
 												<f:attribute name="currentFeedbackEntry" value="#{entry}"/>
 											</ice:commandLink>
@@ -887,30 +945,30 @@
 									<ice:dataPaginator id="feedbackTablePaginator" for="feedbackTable" fastStep="10"
 						                         pageCountVar="pageCount" pageIndexVar="pageIndex" paginator="true" 
 						                         paginatorMaxPages="9" rendered="#{feedbackBean.authorized}">
-										<f:facet name="first" >
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
+										<f:facet id="facetFeedbackTablePaginatorFirst" name="first" >
+						                	<ice:graphicImage id="graphicImageFirst" url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
 						                </f:facet>
-						                <f:facet name="last">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
+						                <f:facet id="facetFeedbackTablePaginatorLast" name="last">
+						                	<ice:graphicImage id="graphicImageLast" url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="previous">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorPrevious}" style="border:none;" />
+						                <f:facet id="facetFeedbackTablePaginatorPrevious" name="previous">
+						                	<ice:graphicImage id="graphicImagePrevious" url="#{msgs.xpDataPaginatorPrevious}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="next">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorNext}" style="border:none;" />
+						                <f:facet id="facetFeedbackTablePaginatorNext" name="next">
+						                	<ice:graphicImage id="graphicImageNext" url="#{msgs.xpDataPaginatorNext}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastforward">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorFastforward}" style="border:none;" />
+						                <f:facet id="facetFeedbackTablePaginatorFastForward" name="fastforward">
+						                	<ice:graphicImage id="graphicImageFastForward" url="#{msgs.xpDataPaginatorFastforward}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastrewind">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;" />
+						                <f:facet id="facetFeedbackTablePaginatorFastRewind" name="fastrewind">
+						                	<ice:graphicImage id="graphicImageFastRewind" url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;" />
 						                </f:facet>
 									</ice:dataPaginator>
 									
-									<ice:commandButton value="Logout" action="#{feedbackBean.closeFeedbackAdminPopup}"/>
-									<ice:outputText value="#{feedbackBean.adminNote}" style="color: LimeGreen; float: right;"
+									<ice:commandButton id="commandbuttonLogout" value="Logout" action="#{feedbackBean.closeFeedbackAdminPopup}"/>
+									<ice:outputText id="outputtextFeedbackNote" value="#{feedbackBean.adminNote}" style="color: LimeGreen; float: right;"
 										rendered="#{feedbackBean.renderAdminNote}"/>
-									<ice:outputText value="#{feedbackBean.adminNote}" style="color: red; float: right;"
+									<ice:outputText id="outputtextFeedbackNoteNot" value="#{feedbackBean.adminNote}" style="color: red; float: right;"
 										rendered="#{!feedbackBean.renderAdminNote}"/>
 								</ice:panelGroup>
 								</ice:panelGroup>
@@ -919,17 +977,22 @@
 					</div>
 			    </ice:panelTab>
 			    
-			    <ice:panelTab label="Query Results" rendered="#{appBean.showTable}">
-			    	<ice:selectOneRadio value="#{appBean.selectedResult}" partialSubmit="true" rendered="#{appBean.showTable}">
-						<f:selectItem itemLabel="MetFusion Cluster" itemValue="cluster" itemDisabled="#{!appBean.showClusterResults}"/>
-						<f:selectItem itemLabel="Fragmenter List" itemValue="fragmenter" itemDisabled="#{!appBean.showResultsFragmenter}"/>
-						<f:selectItem itemLabel="Database List" itemValue="database" itemDisabled="#{!appBean.showResultsDatabase}"/>
-						<f:selectItem itemLabel="Unused Database Entries" itemValue="unused" itemDisabled="#{!appBean.genericDatabase.showNote}"/>
+			    <ice:panelTab id="paneltabQueryResults" label="Query Results" rendered="#{appBean.showTable}">
+			    	<ice:selectOneRadio id="selectOneRadioResults" value="#{appBean.selectedResult}" partialSubmit="true" rendered="#{appBean.showTable}">
+						<f:selectItem id="selectitemResultCluster" itemLabel="MetFusion Cluster" 
+							itemValue="cluster" itemDisabled="#{!appBean.showClusterResults}"/>
+						<f:selectItem id="selectitemResultFragmenter" itemLabel="Fragmenter List" 
+							itemValue="fragmenter" itemDisabled="#{!appBean.showResultsFragmenter}"/>
+						<f:selectItem id="selectitemResultDatabase" itemLabel="Database List" 
+							itemValue="database" itemDisabled="#{!appBean.showResultsDatabase}"/>
+						<f:selectItem id="selectitemResultUnused" itemLabel="Unused Database Entries" 
+							itemValue="unused" itemDisabled="#{!appBean.genericDatabase.showNote}"/>
 					</ice:selectOneRadio>
 					
-					<ice:panelGroup style="background-color: MintCream; border: 1px solid ForestGreen;" rendered="#{appBean.createdResource}">
-						<ice:panelGrid columns="2">
-							<ice:outputText value="Export all results into Excel file:"/>
+					<ice:panelGroup id="panelgroupResultsResource" rendered="#{appBean.createdResource}"
+						style="background-color: MintCream; border: 1px solid ForestGreen;">
+						<ice:panelGrid id="panelgridResultsResource" columns="2">
+							<ice:outputText id="outputtextResultsResource" value="Export all results into Excel file:"/>
 							<ice:outputResource id="outputResource" resource="#{appBean.outputResource}"
 								label="Save results in Excel document." mimeType="application/vnd.ms-excel"
 								fileName="#{appBean.outputResource.resourceName}" image="/images/icons/xls.png" 
@@ -938,16 +1001,17 @@
 						</ice:panelGrid>
     				</ice:panelGroup>
     				
-    				<ice:panelGroup style="background-color: MistyRose; border: 1px solid DarkRed;"
+    				<ice:panelGroup id="panelgroupResultsError" style="background-color: MistyRose; border: 1px solid DarkRed;"
 							rendered="#{appBean.errorMessage.length() > 0}">
-    					<ice:outputText value="#{appBean.errorMessage}" style="margin: 10px;"/>
+    					<ice:outputText id="outputtextResultsError" value="#{appBean.errorMessage}" style="margin: 10px;"/>
     				</ice:panelGroup>
       						
-					<ice:panelStack selectedPanel="#{appBean.selectedResult}">
+					<ice:panelStack id="panelstackSelectedResult" selectedPanel="#{appBean.selectedResult}">
 						<ice:panelGroup id="cluster">
-							<ice:panelGroup style="background-color: MintCream; border: 1px solid ForestGreen;">
-								<ice:panelGrid columns="2">
-									<ice:outputText value="or reranked results only into SD file:" rendered="#{appBean.createdResourceSDF}"/>
+							<ice:panelGroup id="panelgroupResultCluster" style="background-color: MintCream; border: 1px solid ForestGreen;">
+								<ice:panelGrid id="panelgridResultCluster" columns="2">
+									<ice:outputText id="outputtextResultCluster" 
+										value="or reranked results only into SD file:" rendered="#{appBean.createdResourceSDF}"/>
 									<ice:outputResource id="outputResourceSDF" rendered="#{appBean.createdResourceSDF}"
 										resource="#{appBean.outputResourceSDF}" label="Save reranked results in SD file." mimeType="text"
 										fileName="#{appBean.outputResourceSDF.resourceName}" image="/images/icons/sdf.png"/>
@@ -956,92 +1020,105 @@
 						
 							<ice:dataTable id="tableCluster" value="#{appBean.tanimotoClusters}" rendered="#{appBean.showClusterResults}" 
 								var="entry" rows="20">
-								<f:facet name="header">
-									<ice:outputLabel value="MetFusion - Tanimoto Clustering Ranking" />
+								<f:facet id="facetResultTableCluster" name="header">
+									<ice:outputLabel id="outputlabelResultTableCluster"
+										value="MetFusion - Tanimoto Clustering Ranking" />
 								</f:facet>
 								<!-- contract/expand column -->
-								<ice:column>
-									<ice:panelGroup styleClass="#{entry.indentStyleClass}">
+								<ice:column id="columnTableClusterExpand">
+									<ice:panelGroup id="panelgroupTableClusterExpand"
+										styleClass="#{entry.indentStyleClass}">
 										<!-- Render the expand/contract if there is an image -->
-										<ice:commandLink actionListener="#{entry.toggleSubGroupAction}">
+										<ice:commandLink id="commandlinkTableClusterExpand"
+											actionListener="#{entry.toggleSubGroupAction}">
 											<ice:graphicImage id="expandContractImage"
 												value="#{entry.expandContractImage}"
 												style="border: 0px solid;" />
 										</ice:commandLink>
 									</ice:panelGroup>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Port Name</f:facet>
+								<ice:column id="columnTableClusterPort">
+									<f:facet id="facetColumnTableClusterPort" name="header">Port Name</f:facet>
 										#{entry.port}
 									</ice:column>
-								<ice:column>
-									<f:facet name="header">Record ID</f:facet>
-									<ice:outputLink id="linkOut" value="#{entry.url}" target="_blank" style="text-decoration: underline;">
-										<ice:outputText id="rowData" value="#{entry.id}" nospan="true"/>
+								<ice:column id="columnTableRecord">
+									<f:facet id="facetColumnTableRecordHeader" name="header">Record ID</f:facet>
+									<ice:outputLink id="linkOutClusterTableRecord" value="#{entry.url}" 
+										target="_blank" style="text-decoration: underline;">
+										<ice:outputText id="rowDataClusterTableRecord" value="#{entry.id}" nospan="true"/>
 									</ice:outputLink>
 			<!--						#{entry.id}-->
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Compound Name</f:facet>
+								<ice:column id="columnTableCompoundName">
+									<f:facet id="facetColumnTableCompundNameHeader" name="header">Compound Name</f:facet>
 									#{entry.name}
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Exact Mass</f:facet>
-									<ice:outputText value="#{entry.sumFormula}" escape="false"></ice:outputText>
+								<ice:column id="columnTableExactMass">
+									<f:facet id="facetColumnTableExactMassHeader" name="header">Exact Mass</f:facet>
+									<ice:outputText id="outputtextColumnSumFormula" 
+										value="#{entry.sumFormula}" escape="false"></ice:outputText>
 									<br/><br/>
 									#{entry.exactMass}
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Structure</f:facet>
-									<ice:graphicImage value="#{entry.imagePath}" alt="Structure"/>
+								<ice:column id="columnTableStructure">
+									<f:facet id="facetColumnTableStructureHeader" name="header">Structure</f:facet>
+									<ice:graphicImage id="graphicimageColumnStructure" value="#{entry.imagePath}" alt="Structure"/>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Score</f:facet>
-									<ice:outputText value="#{entry.score}">
+								<ice:column id="columnTableScore">
+									<f:facet id="facetColumnTableScoreHeader" name="header">Score</f:facet>
+									<ice:outputText id="outputtextColumnScore" value="#{entry.score}">
 										<f:convertNumber maxFractionDigits="3"/>
 									</ice:outputText>
 									<br/><br/>
-									<ice:outputFormat value="Peaks explained: {0}">
+									<ice:outputFormat id="outputformatColumnPeaks" value="Peaks explained: {0}">
 										<f:param value="#{entry.matchingPeaks}"/>
 									</ice:outputFormat>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Integration Score</f:facet>
-									<ice:outputText value="#{entry.resultScore}">
+								<ice:column id="columnTableIntegrationScore">
+									<f:facet id="facetColumnTableIntegrationScoreHeader" name="header">Integration Score</f:facet>
+									<ice:outputText id="outputtextColumnIntegrationScore" value="#{entry.resultScore}">
 										<f:convertNumber maxFractionDigits="3"/>
 									</ice:outputText>
 <!--									<ice:graphicImage alt="Position change" url="#{entry.flag}" style="margin-left:3px; float: right;"/>-->
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Fragments</f:facet>
-									<ice:outputLink value="#{entry.landingURL}" target="_blank" style="text-decoration: underline;">
-										<ice:outputText value="Compute Fragments" nospan="true"/>
+								<ice:column id="columnTableFragments">
+									<f:facet id="facetColumnTableFragmentsHeader" name="header">Fragments</f:facet>
+									<ice:outputLink id="outputlinkColumnFragments" value="#{entry.landingURL}" target="_blank" 
+										style="text-decoration: underline;">
+										<ice:outputText id="outputtextColumnFragments" value="Compute Fragments" nospan="true"/>
 									</ice:outputLink>
 								</ice:column>
 							</ice:dataTable>
 							
-							<ice:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
+							<ice:panelGrid id="panelgridTableClusterPaginator" columns="1" 
+								styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
 			 
 						        <ice:dataPaginator id="scroll_1_cluster" for="tableCluster" fastStep="10"
 						                         pageCountVar="pageCount" pageIndexVar="pageIndex"
 						                         paginator="true" paginatorMaxPages="9" rendered="#{appBean.showClusterResults}" >
-						                <f:facet name="first" >
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
+						                <f:facet id="facetTableClusterPaginatorFirst" name="first" >
+						                	<ice:graphicImage id="graphicimageTableClusterPaginatorFirst"
+						                		url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
 						                </f:facet>
-						                <f:facet name="last">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
+						                <f:facet id="facetTableClusterPaginatorLast" name="last">
+						                	<ice:graphicImage id="graphicimageTableClusterPaginatorLast"
+						                		url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="previous">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorPrevious}" style="border:none;" />
+						                <f:facet id="facetTableClusterPaginatorPrevious" name="previous">
+						                	<ice:graphicImage id="graphicimageTableClusterPaginatorPrevious"
+						                		url="#{msgs.xpDataPaginatorPrevious}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="next">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorNext}" style="border:none;" />
+						                <f:facet id="facetTableClusterPaginatorNext" name="next">
+						                	<ice:graphicImage id="graphicimageTableClusterPaginatorNext"
+						                		url="#{msgs.xpDataPaginatorNext}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastforward">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorFastforward}" style="border:none;" />
+						                <f:facet id="facetTableClusterPaginatorFastForward" name="fastforward">
+						                	<ice:graphicImage id="graphicimageTableClusterPaginatorFastForward"
+						                		url="#{msgs.xpDataPaginatorFastforward}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastrewind">
-						                	<ice:graphicImage url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;" />
+						                <f:facet id="facetTableClusterPaginatorFastRewind" name="fastrewind">
+						                	<ice:graphicImage id="graphicimageTableClusterPaginatorFastRewind"
+						                		url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;" />
 						                </f:facet>
 						        </ice:dataPaginator>
 						 
@@ -1050,7 +1127,7 @@
 						                        firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex"
 						                        pageCountVar="pageCount" pageIndexVar="pageIndex">
 						 
-						                 <ice:outputFormat styleClass="standard"
+						                 <ice:outputFormat id="outputformatTableCluster" styleClass="standard"
 						                 	value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}">
 						                        <f:param value="#{rowsCount}" />
 						                        <f:param value="#{displayedRowsCountVar}" />
@@ -1066,9 +1143,11 @@
 						</ice:panelGroup>
 						
 						<ice:panelGroup id="fragmenter">
-							<ice:panelGroup style="background-color: MintCream; border: 1px solid ForestGreen;">
-								<ice:panelGrid columns="2">
-									<ice:outputText value="or fragmenter results only into SD file:" rendered="#{appBean.createdResourceSDFFragmenter}"/>
+							<ice:panelGroup id="panelgroupTableFragmenter" 
+								style="background-color: MintCream; border: 1px solid ForestGreen;">
+								<ice:panelGrid id="panelgridTableFragment" columns="2">
+									<ice:outputText id="outputextTableFragmenterSDF" 
+										value="or fragmenter results only into SD file:" rendered="#{appBean.createdResourceSDFFragmenter}"/>
 									<ice:outputResource id="outputResourceSDFFragmenter" rendered="#{appBean.createdResourceSDFFragmenter}"
 										resource="#{appBean.outputResourceSDFFragmenter}" label="Save reranked results in SD file." mimeType="text"
 										fileName="#{appBean.outputResourceSDFFragmenter.resourceName}" image="/images/icons/sdf.png"/>
@@ -1077,72 +1156,80 @@
 						
 							<ice:dataTable id="fragmenterList" value="#{appBean.mfb.results}" 
 								rendered="#{appBean.mfb.showResult}" var="entry" rows="20">
-								<f:facet name="header">
+								<f:facet id="facetFragmenterListInfoHeader" name="header">
 									<ice:outputText value="Original Candidate Ranking" />
 								</f:facet>
-								<ice:column>
-									<f:facet name="header">Port Name</f:facet>
+								<ice:column id="columnFragmenterListPort">
+									<f:facet id="facetFragmenterListPortHeader" name="header">Port Name</f:facet>
 									#{entry.port}
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Record ID</f:facet>
-									<ice:outputLink id="linkOut" value="#{entry.url}" target="_blank" style="text-decoration: underline;">
-										<ice:outputText id="rowData" value="#{entry.id}" nospan="true"/>
+								<ice:column id="columnFragmenterListRecord">
+									<f:facet id="facetFragmenterListRecordHeader" name="header">Record ID</f:facet>
+									<ice:outputLink id="linkOutFragmenterListRecord" value="#{entry.url}" target="_blank" 
+										style="text-decoration: underline;">
+										<ice:outputText id="rowDataFragmenterListRecord" value="#{entry.id}" nospan="true"/>
 									</ice:outputLink>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Compound Name</f:facet>
+								<ice:column id="columnFragmenterListCompoundName">
+									<f:facet id="facetFragmenterListCompoundNameHeader" name="header">Compound Name</f:facet>
 									#{entry.name}
 <!--									<br/>-->
 <!--									#{entry.smiles}-->
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Exact Mass</f:facet>
+								<ice:column id="columnFragmenterListExactMass">
+									<f:facet id="facetFragmenterListExactMassHeader" name="header">Exact Mass</f:facet>
 									<ice:outputText value="#{entry.sumFormula}" escape="false"></ice:outputText>
 									<br/><br/>
 									#{entry.exactMass}
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Structure</f:facet>
+								<ice:column id="columnFragmenterListStructure">
+									<f:facet id="facetFragmenterListStructureHeader" name="header">Structure</f:facet>
 									<ice:graphicImage value="#{entry.imagePath}" alt="Structure"/>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Score</f:facet>
+								<ice:column id="columnFragmenterListScore">
+									<f:facet id="facetFragmenterListScoreHeader" name="header">Score</f:facet>
 									#{entry.score}
 									<br/><br/>
 									<ice:outputFormat value="Peaks explained: {0}">
 										<f:param value="#{entry.matchingPeaks}"/>
 									</ice:outputFormat>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Fragments</f:facet>
+								<ice:column id="columnFragmenterListFragments">
+									<f:facet id="facetFragmenterListFragmentsHeader" name="header">Fragments</f:facet>
 									<ice:outputLink value="#{entry.landingURL}" target="_blank" style="text-decoration: underline;">
 										<ice:outputText value="Compute Fragments" nospan="true"/>
 									</ice:outputLink>
 								</ice:column>
 							</ice:dataTable>
 							
-							<ice:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
+							<ice:panelGrid id="panelgridFragmenterListPaginator" columns="1" 
+								styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
 						        <ice:dataPaginator id="scroll_1_fragmenter" for="fragmenterList" fastStep="10"
 						                         pageCountVar="pageCount" pageIndexVar="pageIndex"
 						                         paginator="true" paginatorMaxPages="9" rendered="#{appBean.mfb.showResult}">
-						                <f:facet name="first" >
-						                         <ice:graphicImage url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
+						                <f:facet id="facetFragmenterListPaginatorFirst" name="first" >
+						                         <ice:graphicImage id="graphicImageFragmenterListPaginatorFirst"
+						                         	url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
 						                </f:facet>
-						                <f:facet name="last">
-						                        <ice:graphicImage url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
+						                <f:facet id="facetFragmenterListPaginatorLast" name="last">
+						                        <ice:graphicImage id="graphicImageFragmenterListPaginatorLast"
+						                        	url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="previous">
-						                        <ice:graphicImage url="#{msgs.xpDataPaginatorPrevious}" style="border:none;" />
+						                <f:facet id="facetFragmenterListPaginatorPrevious" name="previous">
+						                        <ice:graphicImage id="graphicImageFragmenterListPaginatorPrevious"
+						                        	url="#{msgs.xpDataPaginatorPrevious}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="next">
-						                        <ice:graphicImage url="#{msgs.xpDataPaginatorNext}" style="border:none;" />
+						                <f:facet id="facetFragmenterListPaginatorNext" name="next">
+						                        <ice:graphicImage id="graphicImageFragmenterListPaginatorNext"
+						                        	url="#{msgs.xpDataPaginatorNext}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastforward">
-						                        <ice:graphicImage url="#{msgs.xpDataPaginatorFastforward}" style="border:none;" />
+						                <f:facet id="facetFragmenterListPaginatorFastForward" name="fastforward">
+						                        <ice:graphicImage id="graphicImageFragmenterListPaginatorFastForward" 
+						                        	url="#{msgs.xpDataPaginatorFastforward}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastrewind">
-						                        <ice:graphicImage url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;" />
+						                <f:facet id="facetFragmenterListPaginatorFastRewind" name="fastrewind">
+						                        <ice:graphicImage id="graphicImageFragmenterListPaginatorFastRewind"
+						                        	url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;" />
 						                </f:facet>
 						        </ice:dataPaginator>
 						 
@@ -1150,7 +1237,8 @@
 						                        rowsCountVar="rowsCount" displayedRowsCountVar="displayedRowsCountVar"
 						                        firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex"
 						                        pageCountVar="pageCount" pageIndexVar="pageIndex">
-						                 <ice:outputFormat value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}" styleClass="standard" >
+						                 <ice:outputFormat id="outputformatFragmentListResultInfo" 
+						                 	value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}" styleClass="standard" >
 						                        <f:param value="#{rowsCount}" />
 						                        <f:param value="#{displayedRowsCountVar}" />
 						                        <f:param value="#{firstRowIndex}" />
@@ -1163,9 +1251,9 @@
 						</ice:panelGroup>
 						
 						<ice:panelGroup id="database">
-							<ice:panelGroup style="background-color: MintCream; border: 1px solid ForestGreen;">
+							<ice:panelGroup id="panelgroupDatabase" style="background-color: MintCream; border: 1px solid ForestGreen;">
 								<ice:panelGrid columns="2">
-									<ice:outputText value="or database results only into SD file:" rendered="#{appBean.createdResourceSDFDatabase}"/>
+									<ice:outputText id="outputtextDatabaseResults" value="or database results only into SD file:" rendered="#{appBean.createdResourceSDFDatabase}"/>
 									<ice:outputResource id="outputResourceSDFDatabase" rendered="#{appBean.createdResourceSDFDatabase}"
 										resource="#{appBean.outputResourceSDFDatabase}" label="Save reranked results in SD file." mimeType="text"
 										fileName="#{appBean.outputResourceSDFDatabase.resourceName}" image="/images/icons/sdf.png"/>
@@ -1174,66 +1262,77 @@
 						
 							<ice:dataTable id="databaseList" value="#{appBean.genericDatabase.results}"
 								rendered="#{appBean.genericDatabase.showResult}" var="entry" rows="20">
-								<f:facet name="header">
+								<f:facet id="facetDatabaseListHeader" name="header">
 									<ice:outputText value="Original Database Ranking" />
 								</f:facet>
 								
-								<ice:column>
-									<f:facet name="header">Port Name</f:facet>
+								<ice:column id="columnDatabaseListPort">
+									<f:facet id="facetDatabaseListPortHeader" name="header">Port Name</f:facet>
 									#{entry.port}
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Record ID</f:facet>
-									<ice:outputLink id="linkOut" value="#{entry.url}" target="_blank" style="text-decoration: underline;">
-										<ice:outputText id="rowData" value="#{entry.id}" nospan="true"/>
+								<ice:column id="columnDatabaseListRecord">
+									<f:facet id="facetDatabaseListPortHeader" name="header">Record ID</f:facet>
+									<ice:outputLink id="linkOutDatabaseListRecord" value="#{entry.url}" 
+										target="_blank" style="text-decoration: underline;">
+										<ice:outputText id="rowDataDatabaseListRecord" value="#{entry.id}" nospan="true"/>
 									</ice:outputLink>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Compound Name</f:facet>
+								<ice:column id="columnDatabaseListCompoundName">
+									<f:facet id="facetDatabaseListCompoundNameHeader" name="header">Compound Name</f:facet>
 									#{entry.name}
 <!--									#{entry.smiles}-->
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Exact Mass</f:facet>
-									<ice:outputText value="#{entry.sumFormula}" escape="false"></ice:outputText>
+								<ice:column id="columnDatabaseListExactMass">
+									<f:facet id="facetDatabaseListExactMassHeader" name="header">Exact Mass</f:facet>
+									<ice:outputText id="outputtextColumnDatabaseListExactMass" 
+										value="#{entry.sumFormula}" escape="false"></ice:outputText>
 									<br/><br/>
 									#{entry.exactMass}
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Structure</f:facet>
-									<ice:graphicImage value="#{entry.imagePath}" alt="Structure"/>
+								<ice:column id="columnDatabaseListStructure">
+									<f:facet id="facetDatabaseListStructureHeader" name="header">Structure</f:facet>
+									<ice:graphicImage id="graphicimageColumnDatabaseListStructure" 
+										value="#{entry.imagePath}" alt="Structure"/>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Score</f:facet>
+								<ice:column id="columnDatabaseListScore">
+									<f:facet id="facetDatabaseListScoreHeader" name="header">Score</f:facet>
 									#{entry.score}
 									<br/><br/>
-									<ice:outputFormat value="Peaks explained: {0}">
+									<ice:outputFormat id="outputformatColumnDatabaseListScore" 
+										value="Peaks explained: {0}">
 										<f:param value="#{entry.matchingPeaks}"/>
 									</ice:outputFormat>
 								</ice:column>
 							</ice:dataTable>
 							
-							<ice:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
+							<ice:panelGrid id="panelgridDatabaseListPaginator" columns="1" 
+								styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
 						        <ice:dataPaginator id="scroll_1_database" for="databaseList" fastStep="10"
 						                         pageCountVar="pageCount" pageIndexVar="pageIndex"
 						                         paginator="true" paginatorMaxPages="9" rendered="#{appBean.mfb.showResult}" >
-						                <f:facet name="first" >
-						                         <ice:graphicImage url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
+						                <f:facet id="facetDatabaseListPaginatorFirst" name="first" >
+						                         <ice:graphicImage id="graphicimageDatabaseListPaginatorFirst"
+						                         	url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
 						                </f:facet>
-						                <f:facet name="last">
-						                        <ice:graphicImage url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
+						                <f:facet id="facetDatabaseListPaginatorLast" name="last">
+						                        <ice:graphicImage id="graphicimageDatabaseListPaginatorLast"
+						                        	url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="previous">
-						                        <ice:graphicImage url="xmlhttp/css/xp/css-images/arrow-previous.gif" style="border:none;" />
+						                <f:facet id="facetDatabaseListPaginatorPrevious" name="previous">
+						                        <ice:graphicImage id="graphicimageDatabaseListPaginatorPrevious"
+						                        	url="xmlhttp/css/xp/css-images/arrow-previous.gif" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="next">
-						                        <ice:graphicImage url="xmlhttp/css/xp/css-images/arrow-next.gif" style="border:none;" />
+						                <f:facet id="facetDatabaseListPaginatorNext" name="next">
+						                        <ice:graphicImage id="graphicimageDatabaseListPaginatorNext" 
+						                        	url="xmlhttp/css/xp/css-images/arrow-next.gif" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastforward">
-						                        <ice:graphicImage url="xmlhttp/css/xp/css-images/arrow-ff.gif" style="border:none;" />
+						                <f:facet id="facetDatabaseListPaginatorFastForward" name="fastforward">
+						                        <ice:graphicImage id="graphicimageDatabaseListPaginatorFastForward"
+						                        	url="xmlhttp/css/xp/css-images/arrow-ff.gif" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastrewind">
-						                        <ice:graphicImage url="xmlhttp/css/xp/css-images/arrow-fr.gif" style="border:none;" />
+						                <f:facet id="facetDatabaseListPaginatorFastRewind" name="fastrewind">
+						                        <ice:graphicImage id="graphicimageDatabaseListPaginatorFastRewind"
+						                        	url="xmlhttp/css/xp/css-images/arrow-fr.gif" style="border:none;" />
 						                </f:facet>
 						        </ice:dataPaginator>
 						 
@@ -1241,7 +1340,8 @@
 						                        rowsCountVar="rowsCount" displayedRowsCountVar="displayedRowsCountVar"
 						                        firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex"
 						                        pageCountVar="pageCount" pageIndexVar="pageIndex">
-						                 <ice:outputFormat value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}" styleClass="standard" >
+						                 <ice:outputFormat id="outputformatDatabaseListResultInfo" 
+						                 	value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}" styleClass="standard" >
 						                        <f:param value="#{rowsCount}" />
 						                        <f:param value="#{displayedRowsCountVar}" />
 						                        <f:param value="#{firstRowIndex}" />
@@ -1254,9 +1354,9 @@
 						</ice:panelGroup>
 						
 						<ice:panelGroup id="unused">
-							<ice:panelGroup style="background-color: MintCream; border: 1px solid ForestGreen;">
-								<ice:panelGrid columns="2">
-									<ice:outputText value="or unused database entries only into SD file:" 
+							<ice:panelGroup id="panelgroupUnusedEntries" style="background-color: MintCream; border: 1px solid ForestGreen;">
+								<ice:panelGrid id="panelgridUnusedTop" columns="2">
+									<ice:outputText id="outputtextUnusedSDF" value="or unused database entries only into SD file:" 
 										rendered="#{appBean.createdResourceSDFUnused}"/>
 									<ice:outputResource id="outputResourceSDFUnused" rendered="#{appBean.createdResourceSDFUnused}"
 										resource="#{appBean.outputResourceSDFUnused}" label="Save reranked results in SD file." mimeType="text"
@@ -1264,66 +1364,77 @@
 								</ice:panelGrid>
 							</ice:panelGroup>
 						
-			    			<ice:dataTable value="#{appBean.genericDatabase.unused}" var="entry" id="unusedDatabaseEntries" rows="20">
-			    				<f:facet name="header">
-			    					<ice:outputText value="Unused #{appBean.genericDatabase.databaseName} Entries"/>
+			    			<ice:dataTable id="unusedDatabaseEntries" value="#{appBean.genericDatabase.unused}" var="entry" rows="20">
+			    				<f:facet id="facetUnusedDatabaseColumnHeader" name="header">
+			    					<ice:outputText id="outputtextUnusedDatabaseEntries" 
+			    						value="Unused #{appBean.genericDatabase.databaseName} Entries"/>
 			    				</f:facet>
-			    				<ice:column>
-									<f:facet name="header">Port Name</f:facet>
+			    				<ice:column id="columnDatabaseUnusedPort">
+									<f:facet id="facetUnusedDatabasePortHeader" name="header">Port Name</f:facet>
 									#{entry.port}
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Record ID</f:facet>
-									<ice:outputLink id="linkOut" value="#{entry.url}" target="_blank" style="text-decoration: underline;">
-										<ice:outputText id="rowData" value="#{entry.id}" nospan="true"/>
+								<ice:column id="columnDatabaseUnusedRecord">
+									<f:facet id="facetUnusedDatabasePortHeader" name="header">Record ID</f:facet>
+									<ice:outputLink id="linkOutUnusedListRecord" value="#{entry.url}" 
+										target="_blank" style="text-decoration: underline;">
+										<ice:outputText id="rowDataUnusedListRecord" value="#{entry.id}" nospan="true"/>
 									</ice:outputLink>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Compound Name</f:facet>
+								<ice:column id="columnDatabaseUnusedCompoundName">
+									<f:facet id="facetUnusedDatabaseCompoundNameHeader" name="header">Compound Name</f:facet>
 									#{entry.name}
 <!--									#{entry.smiles}-->
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Exact Mass</f:facet>
-									<ice:outputText value="#{entry.sumFormula}" escape="false"></ice:outputText>
+								<ice:column id="columnDatabaseUnusedExactMass">
+									<f:facet id="facetUnusedDatabaseExactMassHeader" name="header">Exact Mass</f:facet>
+									<ice:outputText id="outputtextUnusedDatabaseExactMass"
+										value="#{entry.sumFormula}" escape="false"></ice:outputText>
 									<br/><br/>
 									#{entry.exactMass}
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Structure</f:facet>
-									<ice:graphicImage value="#{entry.imagePath}" alt="Structure"/>
+								<ice:column id="columnDatabaseUnusedStructure">
+									<f:facet id="facetUnusedDatabaseStructureHeader" name="header">Structure</f:facet>
+									<ice:graphicImage id="graphicimageUnusedDatabaseColumnStructure"
+										value="#{entry.imagePath}" alt="Structure"/>
 								</ice:column>
-								<ice:column>
-									<f:facet name="header">Score</f:facet>
+								<ice:column id="columnDatabaseUnusedScore">
+									<f:facet id="facetUnusedDatabaseScoreHeader" name="header">Score</f:facet>
 									#{entry.score}
 									<br/><br/>
-									<ice:outputFormat value="Peaks explained: {0}">
+									<ice:outputFormat idf="outputformatUnusedDatabaseColumnScore"
+										value="Peaks explained: {0}">
 										<f:param value="#{entry.matchingPeaks}"/>
 									</ice:outputFormat>
 								</ice:column>
 			    			</ice:dataTable>
 			    			
-			    			<ice:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
+			    			<ice:panelGrid id="panelgridDatabaseUnusedPaginator" columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
 						        <ice:dataPaginator id="scroll_1_unused" for="unusedDatabaseEntries" fastStep="10"
 						                         pageCountVar="pageCount" pageIndexVar="pageIndex"
 						                         paginator="true" paginatorMaxPages="9" rendered="#{appBean.mfb.showResult}" >
-						                <f:facet name="first" >
-						                         <ice:graphicImage url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
+						                <f:facet id="facetDatabaseUnusedPaginatorFirst" name="first" >
+						                         <ice:graphicImage id="graphicimageDatabaseUnusedPaginatorFirst" 
+						                         	url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
 						                </f:facet>
-						                <f:facet name="last">
-						                        <ice:graphicImage url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
+						                <f:facet id="facetDatabaseUnusedPaginatorLast" name="last">
+						                        <ice:graphicImage id="graphicimageDatabaseUnusedPaginatorLast"
+						                        	url="#{msgs.xpDataPaginatorLast}" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="previous">
-						                        <ice:graphicImage url="xmlhttp/css/xp/css-images/arrow-previous.gif" style="border:none;" />
+						                <f:facet id="facetDatabaseUnusedPaginatorPrevious" name="previous">
+						                        <ice:graphicImage id="graphicimageDatabaseUnusedPaginatorPrevious"
+						                        	url="xmlhttp/css/xp/css-images/arrow-previous.gif" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="next">
-						                        <ice:graphicImage url="xmlhttp/css/xp/css-images/arrow-next.gif" style="border:none;" />
+						                <f:facet id="facetDatabaseUnusedPaginatorNext" name="next">
+						                        <ice:graphicImage id="graphicimageDatabaseUnusedPaginatorNext"
+						                        	url="xmlhttp/css/xp/css-images/arrow-next.gif" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastforward">
-						                        <ice:graphicImage url="xmlhttp/css/xp/css-images/arrow-ff.gif" style="border:none;" />
+						                <f:facet id="facetDatabaseUnusedPaginatorFastForward" name="fastforward">
+						                        <ice:graphicImage id="graphicimageDatabaseUnusedPaginatorFastForward"
+						                        	url="xmlhttp/css/xp/css-images/arrow-ff.gif" style="border:none;" />
 						                </f:facet>
-						                <f:facet name="fastrewind">
-						                        <ice:graphicImage url="xmlhttp/css/xp/css-images/arrow-fr.gif" style="border:none;" />
+						                <f:facet id="facetDatabaseUnusedPaginatorFastRewind" name="fastrewind">
+						                        <ice:graphicImage id="graphicimageDatabaseUnusedPaginatorFastRewind"
+						                        	url="xmlhttp/css/xp/css-images/arrow-fr.gif" style="border:none;" />
 						                </f:facet>
 						        </ice:dataPaginator>
 						 
@@ -1331,7 +1442,8 @@
 						                        rowsCountVar="rowsCount" displayedRowsCountVar="displayedRowsCountVar"
 						                        firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex"
 						                        pageCountVar="pageCount" pageIndexVar="pageIndex">
-						                 <ice:outputFormat value="{0} results unused, displaying {1} results from {2} to {3}. Page {4} / {5}" styleClass="standard" >
+						                 <ice:outputFormat id="outputformatDatabaseUnusedEntries" 
+						                 	value="{0} results unused, displaying {1} results from {2} to {3}. Page {4} / {5}" styleClass="standard" >
 						                        <f:param value="#{rowsCount}" />
 						                        <f:param value="#{displayedRowsCountVar}" />
 						                        <f:param value="#{firstRowIndex}" />
@@ -1347,15 +1459,15 @@
 			    	
 				</ice:panelTab>
 				
-			    <ice:panelTab label="Similarity Matrix" rendered="#{appBean.showResultTable}">
+			    <ice:panelTab id="paneltablSimilarityMatrix" label="Similarity Matrix" rendered="#{appBean.showResultTable}">
 			    	<!-- Controls to change stacking panels -->
-			    	<ice:panelGroup style="width:40%; border: 1px solid silver;">
+			    	<ice:panelGroup id="panelgroupSimilarityMatrix" style="width:40%; border: 1px solid silver;">
 				    	<ice:selectOneRadio id="mainRadio" value="#{appBean.selectedMatrixPanel}"
 	                    		partialSubmit="true" accesskey="S">
-			                <f:selectItem
+			                <f:selectItem id="selectItemOrigMatrix"
 			                        itemValue="origSimMatrix"
 			                        itemLabel="Original Similarity Matrix"/>
-			                <f:selectItem
+			                <f:selectItem id="selectItemNewMatrix"
 			                        itemValue="newSimMatrix"
 			                        itemLabel="Reranked Similarity Matrix"/>
 			            </ice:selectOneRadio>
@@ -1364,32 +1476,37 @@
 			    	<ice:panelStack id="stackingMatrices" selectedPanel="#{appBean.selectedMatrixPanel}">
 			    		<!-- original similarity matrix -->
 						<ice:panelGroup id="origSimMatrix" styleClass="exampleBox columnsTableContainer" rendered="#{appBean.genericDatabase.showResult}">
-							<div style="width:1400px; overflow:auto;">
+							<div id="divOrigSimMatrix" style="width:1400px; overflow:auto;">
 							<!-- dataTable with columns component -->
 							<ice:dataTable id="dataTbl" var="item" rendered="#{appBean.genericDatabase.showResult}"
 								value="#{appBean.colorMatrix.rowDataModel}"
 								columnClasses="columnsColumn" rows="20" style="padding:0;">
 					
-								<ice:column>
-									<f:facet name="header">
-										<ice:outputText value="MetFrag \ #{appBean.genericDatabase.databaseName} Compounds"/>
+								<ice:column id="columnOrigSimMatrixHeader">
+									<f:facet id="facetColumnOrigSimMatrixHeader" name="header">
+										<ice:outputText id="outputTextOrigSimMatrixHeader"
+											value="MetFrag \ #{appBean.genericDatabase.databaseName} Compounds"/>
 									</f:facet>
-									<ice:panelGroup style="text-align: center; white-space: nowrap;" panelTooltip="candidateTooltip">
-										<ice:outputLink id="linkOut" target="_blank"
+									<ice:panelGroup id="panelgroupOrigSimMatrixHeader"
+										style="text-align: center; white-space: nowrap;" panelTooltip="candidateTooltip">
+										<ice:outputLink id="linkOutSimMatrixResultUrl" target="_blank"
 											value="#{appBean.mfb.results[item].url}">
 											<ice:outputText id="candidate"
 												value="#{appBean.mfb.results[item].id}"/>
 										</ice:outputLink>
 									</ice:panelGroup>
 									<ice:panelTooltip id="candidateTooltip">
-										<f:facet name="header">
-											<ice:outputText value="#{appBean.mfb.results[item].name}"/>
+										<f:facet id="facetOrigSimMatrixCandidateTooltipHeader" name="header">
+											<ice:outputText id="outputtextOrigSimMatrixCandidateTooltipHeader" 
+												value="#{appBean.mfb.results[item].name}"/>
 										</f:facet>
-										<f:facet name="body">
-											<ice:panelGrid columns="2">
-												<ice:graphicImage alt="compound image" url="#{appBean.mfb.results[item].imagePath}"/>
-												<ice:panelGroup style="margin-left: 5px; border: 1px solid silver; padding: 5px;">
-													<ice:panelGrid columns="2">
+										<f:facet id="facetOrigSimMatrixCandidateTooltipBody" name="body">
+											<ice:panelGrid id="panelgridOrigSimMatrixCandidateTooltip" columns="2">
+												<ice:graphicImage id="graphicimageOrigSimMatrixCandidateTooltipStructure" 
+													alt="compound image" url="#{appBean.mfb.results[item].imagePath}"/>
+												<ice:panelGroup id="panelgroupOrigSimMatrixCandidateTooltipScores" 
+													style="margin-left: 5px; border: 1px solid silver; padding: 5px;">
+													<ice:panelGrid id="panelgridOrigSimMatrixCandidateTooltipScores" columns="2">
 														<ice:outputLabel id="lblMtrxRankOld" for="txtMtrxRankOld" value="Tied Rank:"/>
 														<ice:outputText id="txtMtrxRankOld" value="#{appBean.mfb.results[item].tiedRank}"/>
 														<ice:outputLabel id="lblMtrxScoreOld" for="txtMtrxScoreOld" value="MetFrag Score:"/>
@@ -1403,12 +1520,13 @@
 	
 								<ice:columns id="columnDataModel"
 									value="#{appBean.colorMatrix.columnDataModel}" var="column">
-									<f:facet name="header">
-										<ice:panelGroup style="text-align: center; white-space: nowrap;">
-											<ice:outputLink id="linkOut"
+									<f:facet id="facetColumnDataModelHeader" name="header">
+										<ice:panelGroup id="panelgroupColumnDataModel" 
+											style="text-align: center; white-space: nowrap;">
+											<ice:outputLink id="linkOutColorMatrx"
 												value="#{appBean.colorMatrix.columnDataModel.rowData.url}"
 												target="_blank">
-												<ice:outputText id="rowData"
+												<ice:outputText id="rowDataColorMatrix"
 													value="#{appBean.colorMatrix.columnDataModel.rowData.id}"
 													nospan="true" />
 											</ice:outputLink>
@@ -1416,7 +1534,8 @@
 									</f:facet>
 									
 									<!-- display the table cell values-->
-									<ice:panelGroup style="text-align: center; white-space: nowrap;">
+									<ice:panelGroup id="panelgroupColumnDataModelCellValues"
+										style="text-align: center; white-space: nowrap;">
 										<ice:outputText id="cellValue"
 											value="#{appBean.colorMatrix.cellValue.valueShort}"
 											style="background-color:#{appBean.colorMatrix.cellValue.color}; padding: 2px;" />
@@ -1427,30 +1546,37 @@
 							<ice:dataPaginator id="scroll_1_tan" for="dataTbl" fastStep="10"
 								pageCountVar="pageCount" pageIndexVar="pageIndex"
 								paginator="true" paginatorMaxPages="9" rendered="#{appBean.mfb.showResult}">
-								<f:facet name="first">
-									<ice:graphicImage url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
+								<f:facet id="facetOrigSimMatrixPaginatorFirst" name="first">
+									<ice:graphicImage id="graphicimageOrigSimMatrixPaginatorFirst"
+										 url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
 								</f:facet>
-								<f:facet name="last">
-									<ice:graphicImage url="#{msgs.xpDataPaginatorLast}" style="border:none;"/>
+								<f:facet id="facetOrigSimMatrixPaginatorLast" name="last">
+									<ice:graphicImage id="graphicimageOrigSimMatrixPaginatorLast"
+										url="#{msgs.xpDataPaginatorLast}" style="border:none;"/>
 								</f:facet>
-								<f:facet name="previous">
-									<ice:graphicImage url="#{msgs.xpDataPaginatorPrevious}"	style="border:none;"/>
+								<f:facet id="facetOrigSimMatrixPaginatorPrevious" name="previous">
+									<ice:graphicImage id="graphicimageOrigSimMatrixPaginatorPrevious"
+										url="#{msgs.xpDataPaginatorPrevious}"	style="border:none;"/>
 								</f:facet>
-								<f:facet name="next">
-									<ice:graphicImage url="#{msgs.xpDataPaginatorNext}"	style="border:none;"/>
+								<f:facet id="facetOrigSimMatrixPaginatorNext" name="next">
+									<ice:graphicImage id="graphicimageOrigSimMatrixPaginatorNext"
+										url="#{msgs.xpDataPaginatorNext}"	style="border:none;"/>
 								</f:facet>
-								<f:facet name="fastforward">
-									<ice:graphicImage url="#{msgs.xpDataPaginatorFastforward}" style="border:none;"/>
+								<f:facet id="facetOrigSimMatrixPaginatorFastForward" name="fastforward">
+									<ice:graphicImage id="graphicimageOrigSimMatrixPaginatorFastForward"
+										url="#{msgs.xpDataPaginatorFastforward}" style="border:none;"/>
 								</f:facet>
-								<f:facet name="fastrewind">
-									<ice:graphicImage url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;"/>
+								<f:facet id="facetOrigSimMatrixPaginatorFastRewind" name="fastrewind">
+									<ice:graphicImage id="graphicimageOrigSimMatrixPaginatorFastRewind"
+										url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;"/>
 								</f:facet>
 							</ice:dataPaginator>
 							<ice:dataPaginator id="scroll_2_tan" for="dataTbl" rendered="#{appBean.mfb.showResult}" 
 		                        rowsCountVar="rowsCount" displayedRowsCountVar="displayedRowsCountVar"
 		                        firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex"
 		                        pageCountVar="pageCount" pageIndexVar="pageIndex">
-				                 <ice:outputFormat value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}" 
+				                 <ice:outputFormat id="outputformaOrigSimMatrixPaginatorInfo" 
+				                 	value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}" 
 				                 	styleClass="standard" >
 			                        <f:param value="#{rowsCount}" />
 			                        <f:param value="#{displayedRowsCountVar}" />
@@ -1464,32 +1590,37 @@
 			    		
 			    		<!-- newly computed MetFusion Tanimoto similarity matrix -->
 			    		<ice:panelGroup id="newSimMatrix">
-								<div style="width:1400px; overflow:auto;">
+								<div id="divNewSimMatrix" style="width:1400px; overflow:auto;">
 								<!-- dataTable with columns component -->
 								<ice:dataTable id="dataTbl2" var="item" rendered="#{appBean.mfb.showResult}"
 									value="#{appBean.colorMatrixAfter.rowDataModel}"
 									columnClasses="columnsColumn" rows="20" style="padding:0;">
 						
-									<ice:column>
-										<f:facet name="header">
-											<ice:outputText value="MetFrag \ #{appBean.genericDatabase.databaseName} Compounds"/>
+									<ice:column id="columnNewSimMatrixHeader">
+										<f:facet id="facetNewSimMatrixHeader" name="header">
+											<ice:outputText id="outputtextNewSimMatrixHeader" 
+												value="MetFrag \ #{appBean.genericDatabase.databaseName} Compounds"/>
 										</f:facet>
-										<ice:panelGroup style="text-align: center; white-space: nowrap;" panelTooltip="candidateTooltip">
-											<ice:outputLink id="linkOut" target="_blank"
+										<ice:panelGroup id="panelgroupNewSimMatrixHeader" 
+											style="text-align: center; white-space: nowrap;" panelTooltip="candidateTooltipNewSimMatrix">
+											<ice:outputLink id="linkOutColorMatrixAfter" target="_blank"
 												value="#{appBean.secondOrder[item].url}">
 												<ice:outputText id="candidate"
 													value="#{appBean.secondOrder[item].id}"/>
 											</ice:outputLink>
 										</ice:panelGroup>
-										<ice:panelTooltip id="candidateTooltip">
-												<f:facet name="header">
-													<ice:outputText value="#{appBean.secondOrder[item].name}"/>
+										<ice:panelTooltip id="candidateTooltipNewSimMatrix">
+												<f:facet id="facetNewSimMatrixTooltipHeader" name="header">
+													<ice:outputText id="outputtextNewSimMatrixTooltipHeader"
+														value="#{appBean.secondOrder[item].name}"/>
 												</f:facet>
-												<f:facet name="body">
-													<ice:panelGrid columns="2">
-														<ice:graphicImage alt="compound image" url="#{appBean.secondOrder[item].imagePath}"/>
-														<ice:panelGroup style="margin-left: 5px; border: 1px solid silver; padding: 5px;">
-															<ice:panelGrid columns="2">
+												<f:facet id="facetNewSimMatrixTooltipBody" name="body">
+													<ice:panelGrid id="panelgridNewSimMatrixTooltip" columns="2">
+														<ice:graphicImage id="graphicimageNewSimMatrixTooltip" 
+															alt="compound image" url="#{appBean.secondOrder[item].imagePath}"/>
+														<ice:panelGroup id="panelgroupNewSimMatrixTooltipScores" 
+															style="margin-left: 5px; border: 1px solid silver; padding: 5px;">
+															<ice:panelGrid id="panelgridNewSimMatrixScores" columns="2">
 																<ice:outputLabel id="lblMtrxRankNew" for="txtMtrxRankNew" value="Tied Rank:"/>
 																<ice:outputText id="txtMtrxRankNew" value="#{appBean.secondOrder[item].tiedRank}"/>
 																<ice:outputLabel id="lblMtrxScoreNew" for="txtMtrxScoreNew" value="MetFusion Score:"/>
@@ -1503,19 +1634,20 @@
 		
 									<ice:columns id="columnDataModel2"
 										value="#{appBean.colorMatrixAfter.columnDataModel}" var="column">
-										<f:facet name="header">
-											<ice:panelGroup>
-												<ice:outputLink id="linkOut"
+										<f:facet id="facetNewSimMatrixColumnHeader" name="header">
+											<ice:panelGroup id="panelgroupNewSimMatrixColumn">
+												<ice:outputLink id="linkOutColorMatrixModel2"
 													value="#{appBean.colorMatrixAfter.columnDataModel.rowData.url}"
 													target="_blank">
-													<ice:outputText id="rowData"
+													<ice:outputText id="rowDataColorMatrixModel2"
 														value="#{appBean.colorMatrixAfter.columnDataModel.rowData.id}"
 														nospan="true" />
 												</ice:outputLink>
 											</ice:panelGroup>
 										</f:facet>
 										<!-- display the table cell values-->
-										<ice:panelGroup style="text-align: center; white-space: nowrap;">
+										<ice:panelGroup id="panelgroupNewSimMatrixCellValues" 
+											style="text-align: center; white-space: nowrap;">
 											<ice:outputText id="cellValue"
 												value="#{appBean.colorMatrixAfter.cellValue.valueShort}"
 												style="background-color:#{appBean.colorMatrixAfter.cellValue.color}; padding: 2px;" />
@@ -1526,30 +1658,37 @@
 								<ice:dataPaginator id="scroll_1_tan2" for="dataTbl2" fastStep="10"
 									pageCountVar="pageCount" pageIndexVar="pageIndex"
 									paginator="true" paginatorMaxPages="9" rendered="#{appBean.mfb.showResult}">
-									<f:facet name="first">
-										<ice:graphicImage url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
+									<f:facet id="facetNewSimMatrixPaginatorFirst" name="first">
+										<ice:graphicImage id="graphicimageNewSimMatrixPaginatorFirst"
+											url="#{msgs.xpDataPaginatorFirst}" style="border:none;"/>
 									</f:facet>
-									<f:facet name="last">
-										<ice:graphicImage url="#{msgs.xpDataPaginatorLast}" style="border:none;"/>
+									<f:facet id="facetNewSimMatrixPaginatorLast" name="last">
+										<ice:graphicImage id="graphicimageNewSimMatrixPaginatorLast"
+											url="#{msgs.xpDataPaginatorLast}" style="border:none;"/>
 									</f:facet>
-									<f:facet name="previous">
-										<ice:graphicImage url="#{msgs.xpDataPaginatorPrevious}"	style="border:none;"/>
+									<f:facet id="facetNewSimMatrixPaginatorPrevious" name="previous">
+										<ice:graphicImage id="graphicimageNewSimMatrixPaginatorPrevious"
+											url="#{msgs.xpDataPaginatorPrevious}"	style="border:none;"/>
 									</f:facet>
-									<f:facet name="next">
-										<ice:graphicImage url="#{msgs.xpDataPaginatorNext}"	style="border:none;"/>
+									<f:facet id="facetNewSimMatrixPaginatorNext" name="next">
+										<ice:graphicImage id="graphicimageNewSimMatrixPaginatorNext"
+											url="#{msgs.xpDataPaginatorNext}"	style="border:none;"/>
 									</f:facet>
-									<f:facet name="fastforward">
-										<ice:graphicImage url="#{msgs.xpDataPaginatorFastforward}" style="border:none;"/>
+									<f:facet id="facetNewSimMatrixPaginatorFastForward" name="fastforward">
+										<ice:graphicImage id="graphicimageNewSimMatrixPaginatorFastForward"
+											url="#{msgs.xpDataPaginatorFastforward}" style="border:none;"/>
 									</f:facet>
-									<f:facet name="fastrewind">
-										<ice:graphicImage url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;"/>
+									<f:facet id="facetNewSimMatrixPaginatorFastRewind" name="fastrewind">
+										<ice:graphicImage id="graphicimageNewSimMatrixPaginatorFastRewind"
+											url="#{msgs.xpDataPaginatorFastrewind}" style="border:none;"/>
 									</f:facet>
 								</ice:dataPaginator>
 								<ice:dataPaginator id="scroll_2_tan2" for="dataTbl2" rendered="#{appBean.mfb.showResult}" 
 			                        rowsCountVar="rowsCount" displayedRowsCountVar="displayedRowsCountVar"
 			                        firstRowIndexVar="firstRowIndex" lastRowIndexVar="lastRowIndex"
 			                        pageCountVar="pageCount" pageIndexVar="pageIndex">
-				                	<ice:outputFormat value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}" 
+				                	<ice:outputFormat id="outputformatNewSimMatrixPaginatorInfo"
+				                		value="{0} candidates found, displaying {1} candidates from {2} to {3}. Page {4} / {5}" 
 					                 	styleClass="standard" >
 				                        <f:param value="#{rowsCount}" />
 				                        <f:param value="#{displayedRowsCountVar}" />
@@ -1563,39 +1702,46 @@
 			    	</ice:panelStack>
 			    </ice:panelTab>
 			    
-			    <ice:panelTab label="Error/Log" rendered="#{!(appBean.errorMessage.length() == 0)} | #{appBean.genericDatabase.showNote}">
-			    	<ice:panelGroup>
-			    		<ice:outputText value="#{appBean.errorMessage}" rendered="#{!(appBean.errorMessage.length() == 0)}"></ice:outputText>
+			    <ice:panelTab id="panelTabError" label="Error/Log" 
+			    	rendered="#{!(appBean.errorMessage.length() == 0)} | #{appBean.genericDatabase.showNote}">
+			    	<ice:panelGroup id="panelgroupTabErrorMessage">
+			    		<ice:outputText	id="outputtextTabErrorMessage" 
+			    		value="#{appBean.errorMessage}" rendered="#{!(appBean.errorMessage.length() == 0)}"></ice:outputText>
 			    	</ice:panelGroup>
-			    	<ice:panelGroup>
-			    		<ice:outputText value="#{appBean.genericDatabase.missingEntriesNote}" rendered="#{appBean.genericDatabase.showNote}"></ice:outputText>
+			    	<ice:panelGroup id="panelgroupTabErrorNote">
+			    		<ice:outputText id="outputtextTabErrorNote" 
+			    		value="#{appBean.genericDatabase.missingEntriesNote}" rendered="#{appBean.genericDatabase.showNote}"></ice:outputText>
 			    	</ice:panelGroup>
 			    </ice:panelTab>
 			    
-			    <ice:panelTab label="Information">
-			    	<ice:panelGrid columns="4">
-	    				<ice:outputLink value="http://msbi.ipb-halle.de/MetFusion/" title="MetFusion" 
+			    <ice:panelTab id="paneltabInformation" label="Information">
+			    	<ice:panelGrid id="panelgridInformation" columns="4">
+	    				<ice:outputLink id="outputlinkInformationMetFusion" 
+	    					value="http://msbi.ipb-halle.de/MetFusion/" title="MetFusion" 
 	    					style="margin: 20px;" target="_blank">
 							<img alt="MetFusion" class="iceGphImg" id="homelogo" src="images/appLogo.png"/>
 						</ice:outputLink>
-						<ice:outputLink value="http://msbi.ipb-halle.de/MetFrag/" title="MetFrag" 
+						<ice:outputLink id="outputlinkInformationMetFrag"  
+							value="http://msbi.ipb-halle.de/MetFrag/" title="MetFrag" 
 							style="margin: 20px;" target="_blank">
 							<img alt="MetFrag" class="iceGphImg" id="homelogoMetFrag" src="images/metfrag_logo.png"/>
 						</ice:outputLink>
-						<ice:outputLink value="http://msbi.ipb-halle.de/MassBank/" title="MassBank" 
+						<ice:outputLink id="outputlinkInformationMassBank"  
+							value="http://msbi.ipb-halle.de/MassBank/" title="MassBank" 
 							style="margin: 20px;" target="_blank">
 							<img alt="MassBank" class="iceGphImg" id="homelogoMassBank" src="images/massbank_logo.png"/>
 						</ice:outputLink>
-						<ice:outputLink value="http://metlin.scripps.edu/" title="Metlin" 
+						<ice:outputLink id="outputlinkInformationMetlin" 
+							value="http://metlin.scripps.edu/" title="Metlin" 
 							style="margin: 20px;" target="_blank">
 							<img alt="Metlin" class="iceGphImg" id="homelogoMetlin" src="images/metlin_logo.png"/>
 						</ice:outputLink>
 					</ice:panelGrid>
-			    	<ice:panelGroup>
-			    		<ice:panelCollapsible expanded="true">
-			    			<f:facet name="header">
-			    				<ice:panelGroup>
-			    					<ice:outputText value="News"></ice:outputText>
+			    	<ice:panelGroup id="panelgroupInformation">
+			    		<ice:panelCollapsible id="panelCollapsilbeInformation" expanded="true">
+			    			<f:facet id="facetPanelCollapsilbeInformationHeader" name="header">
+			    				<ice:panelGroup id="panelgrouppanelCollapsilbeInformation">
+			    					<ice:outputText id="outputtextCollapsilbeInformationNews" value="News"></ice:outputText>
 			    				</ice:panelGroup>
 			    			</f:facet>
 			    			<ice:panelGroup id="pnlGrpNews">
@@ -1624,10 +1770,10 @@
 			    			</ice:panelGroup>
 			    		</ice:panelCollapsible>
 			    		
-			    		<ice:panelCollapsible expanded="false">
-			    			<f:facet name="header">
-			    				<ice:panelGroup>
-			    					<ice:outputText value="Manual"></ice:outputText>
+			    		<ice:panelCollapsible id="panelcollapsibleManual" expanded="false">
+			    			<f:facet id="facetPanelcollapsibleManualHeader" name="header">
+			    				<ice:panelGroup id="panelgroupPanelcollapsibleManual">
+			    					<ice:outputText id="outputtextPanelcollapsibleManualHeader" value="Manual"></ice:outputText>
 			    				</ice:panelGroup>
 			    			</f:facet>
 			    			<ice:panelGroup id="pnlGrpManual">
@@ -1668,30 +1814,32 @@
 			<ice:commandButton id="openFeedbackForm" image="images/Feedback.png" style="display:block; position:fixed; top:600px; right:-1px;"
 				action="#{feedbackBean.openFeedbackPopup}" immediate="false"/>
 			<ice:panelPopup id="popupFeedback" modal="false" rendered="#{feedbackBean.feedbackRendered}" autoCentre="true">
-				<f:facet name="header">
-					<ice:outputText value="MetFusion Feedback Form"></ice:outputText>
-					<ice:commandButton image="images/close.png" action="#{feedbackBean.closeFeedbackPopup}" 
+				<f:facet id="facetFeedbackFormHeader" name="header">
+					<ice:outputText id="putputtextFeedbackForm" value="MetFusion Feedback Form"></ice:outputText>
+					<ice:commandButton id="commandbuttonFeedbackFormClose"
+						image="images/close.png" action="#{feedbackBean.closeFeedbackPopup}" 
 						immediate="false" style="float: right;"/>
 				</f:facet>
-				<f:facet name="body">
-					<h:panelGrid columns="2"> <!-- columnClasses="feedbackCol" -->
-						<ice:outputLabel for="feedbackName" value="Name" />
+				<f:facet id="facetFeedbackFormHBody" name="body">
+					<h:panelGrid id="panelgridFeedbackForm" columns="2"> <!-- columnClasses="feedbackCol" -->
+						<ice:outputLabel id="outputlabelFeedbackName" for="feedbackName" value="Name" />
 						<ice:inputText id="feedbackName" value="#{feedbackBean.name}"/>
 						
-						<ice:outputLabel for="feedbackEmail" value="Email" />
+						<ice:outputLabel id="outputlabelFeedbackEmail" for="feedbackEmail" value="Email" />
 						<ice:inputText id="feedbackEmail" value="#{feedbackBean.email}">
 <!--							required="true">-->
 <!--							<f:validator validatorId="emailValidator"/>-->
 						</ice:inputText>
 						
-						<ice:outputLabel for="feedbackComment" value="Comment" />
+						<ice:outputLabel id="outputlabelFeedbackComment" for="feedbackComment" value="Comment" />
 						<ice:inputTextarea id="feedbackComment" value="#{feedbackBean.comment}" rows="10"
 							style="width: 300px;" validator="#{feedbackBean.validateFeedback}">
 <!--							validator="#{feedbackBean.validateFeedback}"/>-->
 <!--							<f:validator validatorId="feedbackValidator"></f:validator>-->
 						</ice:inputTextarea>
 							
-						<ice:outputLabel for="feedbackAllowStorage" value="Allow storage of settings" />
+						<ice:outputLabel id="outputlabelFeedbackAllowStorage"
+							for="feedbackAllowStorage" value="Allow storage of settings" />
 						<ice:selectBooleanCheckbox value="#{feedbackBean.allowStorage}" id="feedbackAllowStorage"
 							requiredMessage="You have to allow storage of the current parameter settings in order to submit feedback! (opt-in)"/>
 							
@@ -1708,5 +1856,5 @@
 		
 	</h:form>
 </h:body>
-<h:outputStylesheet library="org.icefaces.component.skins" name="rime.css"></h:outputStylesheet>
+<h:outputStylesheet id="outputstylesheetCSSRime" library="org.icefaces.component.skins" name="rime.css"></h:outputStylesheet>
 </html>

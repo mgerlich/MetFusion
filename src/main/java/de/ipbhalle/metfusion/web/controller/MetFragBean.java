@@ -26,28 +26,23 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import org.icefaces.component.fileentry.FileEntry;
-import org.icefaces.component.fileentry.FileEntryEvent;
-import org.icefaces.component.fileentry.FileEntryResults;
-import org.icefaces.component.fileentry.FileEntryResults.FileInfo;
+import org.icefaces.ace.component.fileentry.FileEntry;
+import org.icefaces.ace.component.fileentry.FileEntryEvent;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryResults.FileInfo;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IMolecularFormula;
-import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
-
-import chemaxon.descriptors.ECFP;
 
 import com.chemspider.www.ExtendedCompoundInfo;
 import com.chemspider.www.MassSpecAPISoapProxy;
 
 import de.ipbhalle.enumerations.Adducts;
-import de.ipbhalle.enumerations.Fingerprints;
 import de.ipbhalle.metfrag.keggWebservice.KeggRestService;
-import de.ipbhalle.metfrag.keggWebservice.KeggWebservice;
 import de.ipbhalle.metfrag.main.MetFrag;
 import de.ipbhalle.metfrag.main.MetFragResult;
 import de.ipbhalle.metfrag.molDatabase.PubChemLocal;

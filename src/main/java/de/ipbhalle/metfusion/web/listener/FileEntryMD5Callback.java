@@ -14,10 +14,10 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.codec.binary.Hex;
-import org.icefaces.component.fileentry.FileEntryCallback;
-import org.icefaces.component.fileentry.FileEntryResults;
-import org.icefaces.component.fileentry.FileEntryResults.FileInfo;
-import org.icefaces.component.fileentry.FileEntryStatus;
+import org.icefaces.ace.component.fileentry.FileEntryCallback;
+import org.icefaces.ace.component.fileentry.FileEntryResults;
+import org.icefaces.ace.component.fileentry.FileEntryResults.FileInfo;
+import org.icefaces.ace.component.fileentry.FileEntryStatus;
 
 import de.ipbhalle.metfusion.utilities.icefaces.TutorialMessageUtils;
 
@@ -108,4 +108,5 @@ public class FileEntryMD5Callback implements FileEntryCallback {
 					getHash());
 		}
 	}
+
 }

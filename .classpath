@@ -15,7 +15,7 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSF 2.1.1-FCS">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/MyFaces 2.0.24">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
 			<attribute name="owner.project.facets" value="jst.jsf"/>

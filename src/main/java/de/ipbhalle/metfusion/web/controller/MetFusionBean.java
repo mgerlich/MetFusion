@@ -250,7 +250,7 @@ public class MetFusionBean implements Serializable {
 //		setMfb(mfb);
 		
 		PushRenderer.addCurrentSession(PUSH_GROUP);
-   		renderer = PushRenderer.getPortableRenderer(fc);
+   		renderer = PushRenderer.getPortableRenderer();
    		
 		// retrieve current session bean
 		ELContext elc = fc.getELContext();
